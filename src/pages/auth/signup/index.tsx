@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Container from "../../../components/Container";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import './signup.scss'
 import Button from "../../../components/Button";
 import FormField from "../../../components/FormField";
@@ -9,6 +9,12 @@ const Signup = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [passwordConfirmation, setPasswordConfirmation] = useState("");
+    const navigate = useNavigate()
+    
+    const handleSubmit = () => {
+        // TODO: Validate login parameters
+        navigate('/login')
+    }
 
     return (
         <Container>
@@ -27,7 +33,7 @@ const Signup = () => {
 
                     
 
-                    <Button text="Submit" />
+                    <Button text="Submit" onClick={handleSubmit}/>
 
                     <div className="login_prompt">
                         <p>Already have an account? &nbsp;

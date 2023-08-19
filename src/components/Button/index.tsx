@@ -7,12 +7,16 @@ interface ButtonProps {
         color?: string
     },
     text: string
+    onClick?: () => void
 }
 
 const Button = (props: ButtonProps) => {
-    const { style } = props
+    const { style} = props
+    const onClick = props.onClick ? props.onClick : () => { }
+    
     return (
         <button
+            onClick={onClick}
             style={style}
             className="button">
             <p className="__text"> {props.text}</p>

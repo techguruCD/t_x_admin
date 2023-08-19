@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from 'react-router-dom'
 import Container from "../../../components/Container";
 import './forgotpassword.scss'
 import Button from "../../../components/Button";
@@ -6,7 +7,11 @@ import FormField from "../../../components/FormField";
 
 const ForgotPassword = () => {
     const [email, setEmail] = useState("");
+    const navigate = useNavigate()
 
+    const handleContinue = () => {
+        navigate('/resetpassword')
+    }
     return (
         <Container>
             <div className="forgotpassword_container">
@@ -19,7 +24,7 @@ const ForgotPassword = () => {
                         <FormField type='text' label='Email' placeholder="" />
                     </div>
 
-                    <Button text="Continue" />
+                    <Button text="Continue" onClick={handleContinue} />
                 </div>
             </div>
         </Container>
