@@ -31,7 +31,7 @@ const Signup = () => {
             console.log(error)
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             if ((error as any).error) toast.error((error as any).error)
-            if ((error as any).error.data.message) toast.error((error as any).error.data.message)
+            if ((error as any).data.message) toast.error((error as any).data.message)
             else toast.error('An error occured')
 
             dispatch(reset())
