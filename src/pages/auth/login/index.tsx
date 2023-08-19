@@ -22,15 +22,14 @@ const Signup = () => {
                         <FormField type='password' label='Password' placeholder="" />
                     </div>
 
-                    {/* <div className="forgot_password">
+                    <div className="forgot_password">
                         <Link
                             to="/forgotpassword"
                             className="link"
                         > Forgot password? </Link>
-                    </div> */}
+                    </div>
 
                     <Button text="Submit" />
-
                     <div className="signup_prompt">
                         <p>Don't have an account? &nbsp;
                             <Link

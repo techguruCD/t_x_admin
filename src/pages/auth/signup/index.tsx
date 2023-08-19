@@ -25,12 +25,7 @@ const Signup = () => {
                         <FormField type='password' label='Confirm password' placeholder="" />
                     </div>
 
-                    {/* <div className="forgot_password">
-                        <Link
-                            to="/forgotpassword"
-                            className="link"
-                        > Forgot password? </Link>
-                    </div> */}
+                    
 
                     <Button text="Submit" />
 
