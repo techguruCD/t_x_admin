@@ -10,7 +10,7 @@ const Signup = () => {
     const [password, setPassword] = useState("");
     const [passwordConfirmation, setPasswordConfirmation] = useState("");
     const navigate = useNavigate()
-    
+
     const handleSubmit = () => {
         // TODO: Validate login parameters
         navigate('/login')
@@ -30,9 +30,7 @@ const Signup = () => {
                         <FormField type='password' label='Password' placeholder="" />
                         <FormField type='password' label='Confirm password' placeholder="" />
                     </div>
-
                     
-
                     <Button text="Submit" onClick={handleSubmit}/>
 
                     <div className="login_prompt">
