@@ -1,9 +1,9 @@
-.signup_container {
-    .signup_container_header {
+.login_container {
+    .login_container_header {
         margin-bottom: 50px;
     }
 
-    .signup_form {
+    .login_form {
         width: 100%;
     }
 
@@ -34,12 +34,12 @@
         }
     }
 
-    .login_prompt {
+    .signup_prompt {
         p {
             color: var(--gray);
         }
     }
-    
+
     display: flex;
     flex-direction: column;
     align-items: center;

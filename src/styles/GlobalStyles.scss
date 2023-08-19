@@ -16,6 +16,18 @@
     --error: hsl(0, 79%, 63%);
     --primary: #023047;
     --secondary: #2a9d8f;
+    --primary-100: #041a23;
+    --primary-200: #062f41;
+    --primary-300: var(--primary);
+    --primary-400: #104564;
+    --primary-500: #1b5f86;
+    /* ... and so on */
+
+    --secondary-100: #184e46;
+    --secondary-200: #215a5d;
+    --secondary-300: var(--secondary);
+    --secondary-400: #36a2a0;
+    --secondary-500: #4db9b7;
 }
 
 body,

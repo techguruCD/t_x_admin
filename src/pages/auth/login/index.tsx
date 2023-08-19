@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Container from "../../../components/Container";
 import { Link } from "react-router-dom";
-import './signup.scss'
+import './login.scss'
 import Button from "../../../components/Button";
 import FormField from "../../../components/FormField";
 
@@ -12,17 +12,14 @@ const Signup = () => {
 
     return (
         <Container>
-            <div className="signup_container">
+            <div className="login_container">
                 <div className="content_modal">
-                    <div className="signup_container_header">
-                        <h1>Signup as Admin</h1>
+                    <div className="login_container_header">
+                        <h1>Login</h1>
                     </div>
-                    <div className='signup_form'>
-                        <FormField type='text' label='First name' placeholder="" />
-                        <FormField type='text' label='Last name' placeholder="" />
+                    <div className='login_form'>
                         <FormField type='text' label='Email' placeholder="" />
                         <FormField type='password' label='Password' placeholder="" />
-                        <FormField type='password' label='Confirm password' placeholder="" />
                     </div>
 
                     {/* <div className="forgot_password">
@@ -34,12 +31,12 @@ const Signup = () => {
 
                     <Button text="Submit" />
 
-                    <div className="login_prompt">
-                        <p>Already have an account? &nbsp;
+                    <div className="signup_prompt">
+                        <p>Don't have an account? &nbsp;
                             <Link
-                                to="/login"
+                                to="/signup"
                                 className="link"
-                            >Login</Link>
+                            >Signup</Link>
                         </p>
                     </div>
                 </div>

@@ -7,7 +7,6 @@ interface ContainerProps {
 const Container = ({ children }: ContainerProps) => {
     return (
         <div className="container">
-            <p> Button </p>
             {children}
         </div>
     )
