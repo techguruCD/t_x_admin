@@ -4,7 +4,6 @@
         height: 50px;
         border-radius: 5px;
         border: 1px solid var(--gray-203);
-        margin-bottom: 30px;
         font-size: 16px;
         font-weight: 400;
         padding: 0px 20px;
@@ -39,7 +38,15 @@
         padding-bottom: 10px;
     }
 
+    .form_field_error {
+        font-size: 13px;
+        color: var(--error);
+        transition: all 0.3s;
+    }
+
     width: 100%;
+    margin-bottom: 15px;
+
     // height: 200px;
     // border-radius: 10px;
 }

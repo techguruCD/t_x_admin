@@ -1,3 +1,4 @@
+import React from 'react'
 import './button.scss'
 
 interface ButtonProps {
@@ -7,13 +8,13 @@ interface ButtonProps {
         color?: string
     },
     text: string
-    onClick?: () => void
+    onClick?: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 const Button = (props: ButtonProps) => {
-    const { style} = props
+    const { style } = props
     const onClick = props.onClick ? props.onClick : () => { }
-    
+
     return (
         <button
             onClick={onClick}

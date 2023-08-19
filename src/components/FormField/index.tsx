@@ -1,15 +1,23 @@
 import './formfield.scss'
 import { AUTH } from '../../constants';
+
+
 interface FormFieldProps {
     label: string;
     type: string;
-    placeholder: string;
+    name: string;
+    placeholder?: string;
+    errorMessage?: string;
+    onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 const FormField = (props: FormFieldProps) => {
     const {
         label,
         type,
+        name,
         placeholder,
+        errorMessage,
+        onChange
     } = props
 
     return (
@@ -17,10 +25,12 @@ const FormField = (props: FormFieldProps) => {
             <label className="form_field_label" htmlFor={label}>{label}</label>
             <input
                 type={type == 'authcode' ? 'password' : type}
-                placeholder={placeholder}
-                // set length of input field
-                maxLength={type == 'authcode' ? AUTH.CODE_MAX_LENGTH: 100}
+                placeholder={placeholder ?? ''}
+                name={name}
+                maxLength={type == 'authcode' ? AUTH.CODE_MAX_LENGTH : 100}
+                onChange={onChange}
             />
+            <label className="form_field_error" htmlFor={label}>{errorMessage ?? ''}</label>
         </div>
     );
 }

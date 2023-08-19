@@ -11,23 +11,27 @@ import ResetPassword from "./pages/auth/reset-password";
 // import Spinner from "./components/Spinner";
 // import ErrorPage from "./pages/error";
 // import EmailVerify from "./pages/auth/verify-email";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { BrowserRouter } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
-const queryClient = new QueryClient();
 function App() {
     return (
-        <QueryClientProvider client={queryClient}>
-            <Routes>
-                {/* <Route path="/login" element={<Login />} /> */}
-                <Route path="/signup" element={<Signup />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/forgotpassword" element={<ForgotPassword />} />
-                <Route path="/resetpassword" element={<ResetPassword />} />
-                {/* <Route path="/resetpassword" element={<ResetPassword />} />
+        <>
+            <BrowserRouter>
+                <Routes>
+                    {/* <Route path="/login" element={<Login />} /> */}
+                    <Route path="/signup" element={<Signup />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/forgotpassword" element={<ForgotPassword />} />
+                    <Route path="/resetpassword" element={<ResetPassword />} />
+                    {/* <Route path="/resetpassword" element={<ResetPassword />} />
                 <Route path="/forgotpassword" element={<ForgotPassword />} />
                 <Route path="*" element={<ErrorPage />} /> */}
-            </Routes>
-        </QueryClientProvider>
+                </Routes>
+            </BrowserRouter>
+            <ToastContainer />
+        </>
     );
 }
 
