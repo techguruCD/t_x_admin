@@ -21,7 +21,9 @@ const VerifyEmail = () => {
         if (error) {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             if ((error as any).error) toast.error((error as any).error)
-            if ((error as any).data.message) toast.error((error as any).data.message)
+
+            const badRequestError = (error.status != 500) && (error as any).data.message
+            if (badRequestError) toast.error((error as any).data.message)
             else toast.error('An error occured')
 
             setEmailverificationCode(null)
