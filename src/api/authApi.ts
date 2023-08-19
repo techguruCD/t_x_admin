@@ -1,35 +1,13 @@
 import { API_BASEURL } from '../constants';
+import {
+    UserLoginData,
+    SignupResponse,
+    UserSignupData,
+    VerifyEmailResponse,
+    VerifyEmailRequestParams
+} from './types/authApi.types';
 import { apiSlice } from './api';
 
-interface UserSignupData {
-    firstname: string,
-    lastname: string,
-    email: string,
-    password: string
-}
-
-interface UserLoginData {
-    email: string,
-    password: string
-}
-
-interface SignupResponse {
-    success: boolean;
-    message: string;
-    data: {
-        user: {
-            firstname: string;
-            lastname: string;
-            email: string;
-            role: string;
-            _id: string;
-            id: string;
-            createdAt: string;
-            updatedAt: string;
-        };
-        access_token: string;
-    };
-}
 const AUTH_URL = API_BASEURL + '/auth';
 
 export const authApiSlice = apiSlice.injectEndpoints({
@@ -48,6 +26,14 @@ export const authApiSlice = apiSlice.injectEndpoints({
                 method: 'POST',
                 body: credentials
             }),
+        }),
+        verifyEmail: builder.mutation<VerifyEmailResponse, VerifyEmailRequestParams>({
+            query: (credentials: VerifyEmailRequestParams) => ({
+                url: AUTH_URL + '/verifyemail',
+                method: 'POST',
+                body: { verification_code: credentials.verification_code },
+                headers: { Authorization: `Bearer ${credentials.access_token}` }
+            })
         })
     })
 })
