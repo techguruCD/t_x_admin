@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux'
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
-import { signup, reset } from '../../../features/auth/authSlice'
+import { setCredentials, reset } from '../../../features/authSlice'
+import { useSignupMutation } from '../../../features/authApiSlice'
 import Container from "../../../components/Container";
 import Button from "../../../components/Button";
 import FormField from "../../../components/FormField";
@@ -20,25 +21,28 @@ const Signup = () => {
         confirmPassword: ''
     })
     const { firstName, lastName, email, password, confirmPassword } = formData
+    const [signup, { isLoading, isSuccess, error }] = useSignupMutation()
 
     const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
-    const { user, isLoading, isError, isSuccess, message } = useSelector((state: RootState) => state.auth)
 
     useEffect(() => {
-        if (isError) {
-            toast.error(message)
+        if (error) {
+            if (error.error) toast.error(error.error)
+            else toast.error('An error occured')
+
             dispatch(reset())
         }
-        if (isSuccess || user) {
+
+        if (isSuccess) {
             navigate('/login')
-            toast.success(message)
+            toast.success('Success, please check your email to verify your account')
         }
 
         dispatch(reset())
-    }, [user, isLoading, isError, isSuccess, message, navigate, dispatch])
+    }, [error, isSuccess, navigate, dispatch])
 
-    const handleSubmit = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleSubmit = async (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault()
 
         const signupData = {
@@ -51,8 +55,13 @@ const Signup = () => {
         if (Object.keys(response).length > 0) {
             return toast.error(Object.values(response)[0])
         }
-        
-        dispatch(signup(signupData))
+
+        const signupResponse = await signup(signupData).unwrap()
+        const credentials = {
+            user: signupResponse.data.user,
+            emailVerificationAccessToken: signupResponse.data.access_token
+        }
+        dispatch(setCredentials(credentials))
     }
 
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {

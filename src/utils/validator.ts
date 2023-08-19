@@ -3,7 +3,7 @@ export function passwordValidator(password: string) {
     const hasNumber = /[0-9]/.test(password);
     const hasUpperCase = /[A-Z]/.test(password);
     const hasLowerCase = /[a-z]/.test(password);
-    const hasSymbol = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(password);
+    const hasSymbol = /[!@#$%^&*()_+\-=\\[\]{};':"\\|,.<>\\/?]+/.test(password);
 
     if (password.length < minLength) {
         return "Password must be at least 12 characters long.";
@@ -54,10 +54,11 @@ export const validateSignupData = (data: SignupData): SignupErrors => {
         errors.lastname = "Last name is required";
     }
 
-    if (!data.email.includes("@")) {
-        errors.email = "Invalid email format";
+    const emailRegExp = /\S+@\S+\.\S+/;
+    if (!emailRegExp.test(data.email)) {
+        errors.email = "Email must be a valid email address";
     }
-
+    
     const passwordValidatorResult = passwordValidator(data.password);
     if (passwordValidatorResult != 'valid') {
         errors.password = passwordValidatorResult;

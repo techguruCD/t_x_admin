@@ -1,4 +1,10 @@
 import COLORS from './colors';
 import AUTH from './auth';
 
-export { COLORS, AUTH };
+const API_BASEURL = import.meta.env.VITE_API_BASEURL;
+
+export {
+    COLORS,
+    AUTH,
+    API_BASEURL
+};
