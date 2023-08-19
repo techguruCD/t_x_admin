@@ -39,4 +39,4 @@ export const authApiSlice = apiSlice.injectEndpoints({
 })
 
 export type { UserSignupData, UserLoginData }
-export const { useLoginMutation, useSignupMutation } = authApiSlice;
+export const { useLoginMutation, useSignupMutation, useVerifyEmailMutation } = authApiSlice;

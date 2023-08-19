@@ -28,15 +28,17 @@ const Signup = () => {
 
     useEffect(() => {
         if (error) {
+            console.log(error)
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             if ((error as any).error) toast.error((error as any).error)
+            if ((error as any).error.data.message) toast.error((error as any).error.data.message)
             else toast.error('An error occured')
 
             dispatch(reset())
         }
 
         if (isSuccess) {
-            navigate('/login')
+            navigate('/verifyemail')
             toast.success('Success, please check your email to verify your account')
         }
 
