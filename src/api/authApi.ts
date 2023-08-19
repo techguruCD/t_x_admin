@@ -1,5 +1,5 @@
 import { API_BASEURL } from '../constants';
-import { apiSlice } from './apiSlice';
+import { apiSlice } from './api';
 
 interface UserSignupData {
     firstname: string,

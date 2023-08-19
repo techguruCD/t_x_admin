@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
-import { setCredentials, reset } from '../../../features/authSlice'
-import { useSignupMutation } from '../../../features/authApiSlice'
+import { setCredentials, reset } from '../../../slices/authSlice'
+import { useSignupMutation } from '../../../api/authApi'
 import Container from "../../../components/Container";
 import Button from "../../../components/Button";
 import FormField from "../../../components/FormField";
 import './signup.scss'
-import { AppDispatch, RootState } from "../../../app/store";
+import { AppDispatch } from "../../../app/store";
 import Spinner from "../../../components/Spinner";
 import { validateSignupData } from "../../../utils/validator";
 
@@ -28,7 +28,8 @@ const Signup = () => {
 
     useEffect(() => {
         if (error) {
-            if (error.error) toast.error(error.error)
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            if ((error as any).error) toast.error((error as any).error)
             else toast.error('An error occured')
 
             dispatch(reset())
@@ -42,7 +43,7 @@ const Signup = () => {
         dispatch(reset())
     }, [error, isSuccess, navigate, dispatch])
 
-    const handleSubmit = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
 
         const signupData = {

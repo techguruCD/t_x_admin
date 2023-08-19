@@ -41,9 +41,9 @@ const ResetPassword = () => {
                         <p> Input the password reset code sent to your email</p>
                     </div>
                     <div className='resetpassword_form'>
-                        <FormField type='authcode' label='Reset code' onChange={handleChange.resetCode} placeholder="" />
-                        <FormField type='password' label='New password' onChange={handleChange.password} placeholder="" />
-                        <FormField type='password' label='Confirm password' onChange={handleChange.confirmPassword} placeholder="" />
+                        <FormField type='authcode' label='Reset code' onChange={handleChange.resetCode} name='resetCode' placeholder="" />
+                        <FormField type='password' label='New password' onChange={handleChange.password} name='password' placeholder="" />
+                        <FormField type='password' label='Confirm password' onChange={handleChange.confirmPassword} name='confirmPassword' placeholder="" />
                     </div>
 
                     <Button text="Continue" onClick={handleContinue} />

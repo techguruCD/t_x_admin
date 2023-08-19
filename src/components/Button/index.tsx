@@ -8,7 +8,7 @@ interface ButtonProps {
         color?: string
     },
     text: string
-    onClick?: (e: React.ChangeEvent<HTMLInputElement>) => void
+    onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
 }
 
 const Button = (props: ButtonProps) => {

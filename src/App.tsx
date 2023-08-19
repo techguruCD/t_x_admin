@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 import "./styles/GlobalStyles.scss";
 import Signup from "./pages/auth/signup";
+import VerifyEmail from "./pages/auth/verify-email";
 import Login from "./pages/auth/login";
 import ForgotPassword from "./pages/auth/forgot-password";
 import ResetPassword from "./pages/auth/reset-password";
@@ -22,6 +23,7 @@ function App() {
                 <Routes>
                     {/* <Route path="/login" element={<Login />} /> */}
                     <Route path="/signup" element={<Signup />} />
+                    <Route path="/verifyemail" element={<VerifyEmail />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/forgotpassword" element={<ForgotPassword />} />
                     <Route path="/resetpassword" element={<ResetPassword />} />
