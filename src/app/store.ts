@@ -5,7 +5,7 @@ import { apiSlice } from "../api/api";
 
 interface RootState {
     auth: AuthState;
-    dashboad: DasboardState;
+    dashboard: DashboardState;
 }
 
 // App disptch type

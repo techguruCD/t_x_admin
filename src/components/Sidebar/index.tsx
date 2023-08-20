@@ -1,4 +1,4 @@
-import React, { useState, useNavigate } from 'react'
+import React, { useState } from 'react'
 import './sidebar.scss'
 import {
     faUsers, faBullhorn, faSignOutAlt,
@@ -28,7 +28,7 @@ const SideBarItem = ({ icon, text }: SideBarItemProps) => {
     const onClick = () => {
         dispatch(setSelectedPane(text.toLowerCase() as SetPanePayload))
     }
-    
+
     return (
         <div
             className='sidebar__content__item'
@@ -50,7 +50,7 @@ const SideBarItem = ({ icon, text }: SideBarItemProps) => {
 }
 
 const Sidebar = () => {
-    const navigate = useNavigate()
+    // const navigate = useNavigate()
 
 
     return (
