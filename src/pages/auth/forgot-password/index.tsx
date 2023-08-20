@@ -4,23 +4,19 @@ import Container from "../../../components/Container";
 import './forgotpassword.scss'
 import Button from "../../../components/Button";
 import FormField from "../../../components/FormField";
-import { useDispatch, useSelector } from "react-redux";
-import { useForgotPasswordMutation, useResetPasswordMutation } from "../../../api/authApi";
-import { RootState } from "../../../app/store";
+import { useDispatch} from "react-redux";
+import { useForgotPasswordMutation } from "../../../api/authApi";
 import { validateEmail } from "../../../utils/validator";
 import { toast } from 'react-toastify'
 import { setCredentials } from "../../../slices/authSlice";
 
 const ForgotPassword = () => {
     const [email, setEmail] = useState<string>('');
-    const [passwordResetCode, setPasswordResetCode] = useState<number | null>(null)
+
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
     const [forgotPassword, { isSuccess, error, data: forgotPasswordSuccessResponse }] = useForgotPasswordMutation()
-    const [resetPassword, { isSuccess: resetPasswordSuccess, error: resetPasswordError }] = useResetPasswordMutation()
-
-    const { passwordResetToken } = useSelector((state: RootState) => state.auth)
 
     useEffect(() => {
         if (error) {
@@ -47,11 +43,10 @@ const ForgotPassword = () => {
         }
 
         setEmail('');
+    }, [navigate, dispatch, isSuccess, error, forgotPasswordSuccessResponse])
 
-    }, [passwordResetToken, navigate, dispatch, isSuccess, error, forgotPasswordSuccessResponse])
 
     const handleContinue = async () => {
-        // validate input
         const validatorResponse = validateEmail(email)
         if (validatorResponse.errors) {
             toast.error(validatorResponse.errors.email)
@@ -66,7 +61,7 @@ const ForgotPassword = () => {
         await forgotPassword({ email }).unwrap()
     }
 
-    return (
+        return (
         <Container>
             <div className="forgotpassword_container">
                 <div className="content_modal">

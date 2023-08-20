@@ -119,13 +119,38 @@ export const validateLoginData = (data: LoginData): LoginDataValidatorResposne =
     return { isValid: true };
 }
 
-export const validateResetPasswordData = (passwordResetCode: number) => {
-    const errors = {} as { passwordResetCode: string };
+interface ResetPasswordData {
+    passwordResetCode: number | null;
+    newPassword: string;
+    confirmNewPassword: string;
+}
+type ResetPasswordErrors = {
+    [k in keyof ResetPasswordData]: string;
+}
+export const validateResetPasswordData = (data: ResetPasswordData) => {
+    const { passwordResetCode, newPassword, confirmNewPassword } = data;
+    const errors = {} as ResetPasswordErrors;
 
-    if (passwordResetCode.toString().length !== 4) {
-        errors.passwordResetCode = "Password reset code must be 4 digits long";
-        return { isValid: false, errors }
+    if (!passwordResetCode) {
+        errors.passwordResetCode = "Password reset code is required";
     }
 
-    return { isValid: true };
+    if (passwordResetCode && passwordResetCode.toString().length !== 4) {
+        errors.passwordResetCode = "Password reset code must be 4 digits long";
+    }
+
+    const passwordValidatorResult = passwordValidator(newPassword);
+    if (passwordValidatorResult != 'valid') {
+        errors.newPassword = passwordValidatorResult;
+    }
+
+    if (newPassword !== confirmNewPassword) {
+        errors.confirmNewPassword = "Passwords do not match";
+    }
+
+    if (Object.keys(errors).length > 0) {
+        return { isValid: false as const, errors };
+    } else {
+        return { isValid: true as const};
+    }
 }

@@ -67,7 +67,7 @@ const Signup = () => {
         const credentials = {
             user: signupResponse.data.user,
             credentialType: 'emailVerification' as const,
-            emailVerificationAccessToken: signupResponse.data.access_token
+            emailVerificationToken: signupResponse.data.access_token
         }
         dispatch(setCredentials(credentials))
     }
