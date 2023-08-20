@@ -1,0 +1,38 @@
+.dashboardpane_container {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    width: 100%;
+    height: 100%;
+    margin: 10px;
+    // padding: 20px;
+    border-radius: 10px;
+
+    .dashboardpane {
+        display: flex;
+        flex-direction: column;
+        align-items: left;
+        width: 100%;
+        height: 100%;
+        padding: 40px;
+        border-radius: 10px;
+        background-color: #f5f5f5;
+
+        .__header {
+            width: 100%;
+            // height: 100px;
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 20px;
+
+            h1 {
+                font-size: 50px;
+                color: var(--primary);
+            }
+
+            h2 {
+                font-size: 30px;
+                color: var(--primary);
+            }
+        }
+    }
+}

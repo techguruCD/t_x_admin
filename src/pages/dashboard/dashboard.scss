@@ -10,6 +10,15 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
+.dashboard_content {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    width: 100%;
+    padding-right: 20px;
+    border-radius: 10px;
+}
+
 .dashboard_content_modal {
     background-color: var(--gray-100)
 }

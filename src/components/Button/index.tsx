@@ -35,12 +35,11 @@ const Button = (props: ButtonProps) => {
 interface CustomButtonProps {
     icon: IconDefinition,
     text: string,
-    style: Record<string, string>
+    style: Record<string, string>,
 }
 
 const CustomButton = ({ icon, text, style }: CustomButtonProps) => {
     const [customButtonItemHover, setSideBarItemHover] = useState(false)
-    const [iconColor, setIconColor] = useState('bright')
 
     function toggleHoverEffect(light: boolean) {
         setSideBarItemHover(light)
