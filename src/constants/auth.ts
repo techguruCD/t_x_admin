@@ -1,3 +1,3 @@
 export default {
-    CODE_MAX_LENGTH: 6,
+    CODE_MAX_LENGTH: 4,
 }

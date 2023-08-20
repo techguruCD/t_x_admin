@@ -14,7 +14,7 @@ import { reset } from "../../../slices/authSlice";
 const ResetPassword = () => {
     const [newPassword, setNewPassword] = useState<string>('')
     const [confirmPassword, setConfirmPassword] = useState<string>('')
-    const [passwordResetCode, setPasswordResetCode] = useState<number | null>(null)
+    const [passwordResetCode, setPasswordResetCode] = useState<string>('')
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -25,10 +25,12 @@ const ResetPassword = () => {
     useEffect(() => {
         if (resetPasswordSuccess) {
             toast.success("Success, Password reset successful");
-            setPasswordResetCode(null)
-            dispatch(reset())
-            
+            // setPasswordResetCode('')
+            // setNewPassword('')
+            // setConfirmPassword('')
+
             navigate('/login')
+            dispatch(reset())
         }
 
         if (resetPasswordError) {
@@ -39,11 +41,12 @@ const ResetPassword = () => {
             const apiError = resetPasswordError as any;
             const badRequestError = apiError.status && apiError.status < 500 && apiError.data?.message;
             if (badRequestError) toast.error(apiError.data?.message);
-
             else toast.error("An error occured");
         }
 
-        setPasswordResetCode(null)
+        setPasswordResetCode('')
+        setNewPassword('')
+        setConfirmPassword('')
     }, [resetPasswordSuccess, resetPasswordError, navigate, dispatch])
 
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -81,7 +84,7 @@ const ResetPassword = () => {
         }
 
         const data = {
-            password_reset_code: passwordResetCode,
+            password_reset_code: parseInt(passwordResetCode, 10),
             new_password: newPassword,
             access_token: passwordResetToken
         }
@@ -97,9 +100,9 @@ const ResetPassword = () => {
                         <p> Input the password reset code sent to your email</p>
                     </div>
                     <div className='resetpassword_form'>
-                        <FormField type='authcode' label='Reset code' onChange={onChange} name='passwordResetCode' placeholder="" />
-                        <FormField type='password' label='New password' onChange={onChange} name='password' placeholder="" />
-                        <FormField type='password' label='Confirm password' onChange={onChange} name='confirmPassword' placeholder="" />
+                        <FormField type='authcode' label='Reset code' onChange={onChange} text={passwordResetCode} name='passwordResetCode' placeholder="" />
+                        <FormField type='password' label='New password' onChange={onChange} text={newPassword} name='password' placeholder="" />
+                        <FormField type='password' label='Confirm password' onChange={onChange} text={confirmPassword} name='confirmPassword' placeholder="" />
                     </div>
 
                     <Button text="Continue" onClick={handleContinue} />

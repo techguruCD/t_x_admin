@@ -31,7 +31,12 @@ export const authApiSlice = apiSlice.injectEndpoints({
             query: (credentials: UserSignupData) => ({
                 url: AUTH_URL + '/signup',
                 method: 'POST',
-                body: credentials
+                body: {
+                    firstname: credentials.firstname,
+                    lastname: credentials.lastname,
+                    email: credentials.email.toLowerCase(),
+                    password: credentials.password
+                }
             }),
         }),
         verifyEmail: builder.mutation<VerifyEmailResponse, VerifyEmailRequestParams>({
@@ -44,7 +49,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
         }),
         retryVerifyEmail: builder.mutation<RetryVerifyEmailResponse, RetryVerifyEmailRequestParams>({
             query: (credentials: RetryVerifyEmailRequestParams) => ({
-                url: AUTH_URL + `/verificationemail?email=${credentials.email}`,
+                url: AUTH_URL + `/verificationemail?email=${credentials.email.tolowerCase()}`,
                 method: 'GET'
             })
         }),
@@ -52,15 +57,16 @@ export const authApiSlice = apiSlice.injectEndpoints({
             query: (credentials: ForgotPasswordRequestParams) => ({
                 url: AUTH_URL + '/forgotpassword',
                 method: 'POST',
-                body: { email: credentials.email }
+                body: { email: credentials.email.toLowerCase() }
             })
         }),
         resetPassword: builder.mutation<ResetPasswordResponse, ResetPasswordRequestParams>({
             query: (credentials: ResetPasswordRequestParams) => ({
                 url: AUTH_URL + '/resetpassword',
-                method: 'POST',
+                method: 'PATCH',
                 body: {
                     new_password: credentials.new_password,
+                    password_reset_code: credentials.password_reset_code
                 },
                 headers: { Authorization: `Bearer ${credentials.access_token}` }
             })

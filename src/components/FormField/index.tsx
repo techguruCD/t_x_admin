@@ -1,11 +1,11 @@
 import './formfield.scss'
 import { AUTH } from '../../constants';
 
-
 interface FormFieldProps {
     label: string;
     type: string;
     name: string;
+    text?: string;
     placeholder?: string;
     errorMessage?: string;
     onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -15,6 +15,7 @@ const FormField = (props: FormFieldProps) => {
         label,
         type,
         name,
+        text,
         placeholder,
         errorMessage,
         onChange
@@ -29,6 +30,7 @@ const FormField = (props: FormFieldProps) => {
                 name={name}
                 maxLength={type == 'authcode' ? AUTH.CODE_MAX_LENGTH : 100}
                 onChange={onChange}
+                value={text}
             />
             <label className="form_field_error" htmlFor={label}>{errorMessage ?? ''}</label>
         </div>

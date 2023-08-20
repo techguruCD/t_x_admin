@@ -40,11 +40,16 @@ const ForgotPassword = () => {
                 credentialType: 'passwordReset' as const
             }
             dispatch(setCredentials(credentials))
+            navigate('/resetpassword')
         }
 
         setEmail('');
     }, [navigate, dispatch, isSuccess, error, forgotPasswordSuccessResponse])
 
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        e.preventDefault()
+        setEmail(e.target.value);
+    };
 
     const handleContinue = async () => {
         const validatorResponse = validateEmail(email)
@@ -70,7 +75,7 @@ const ForgotPassword = () => {
                         <p>Please provide the email address associated with your account</p>
                     </div>
                     <div className='forgotpassword_form'>
-                        <FormField type='text' label='Email' name="email" />
+                        <FormField type='text' label='Email' name="email" onChange={onChange} />
                     </div>
 
                     <Button text="Continue" onClick={handleContinue} />
