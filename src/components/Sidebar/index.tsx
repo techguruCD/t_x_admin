@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useNavigate } from 'react'
 import './sidebar.scss'
 import {
     faUsers, faBullhorn, faSignOutAlt,
@@ -6,6 +6,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon, IconProp } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
+import { useSelector, useDispatch } from 'react-redux'
+import { AppDispatch } from '../../app/store';
+import { SetPanePayload, setSelectedPane } from '../../slices/dashboardSlice';
 
 interface SideBarItemProps {
     icon: IconDefinition;
@@ -15,16 +18,23 @@ interface SideBarItemProps {
 const SideBarItem = ({ icon, text }: SideBarItemProps) => {
     const [sideBarItemHover, setSideBarItemHover] = useState(false)
     const [iconColor, setIconColor] = useState('bright')
+    const dispatch = useDispatch<AppDispatch>()
 
     function toggleHoverEffect(light: boolean) {
         setSideBarItemHover(light)
         setIconColor(iconColor === 'bright' ? 'dark' : 'bright')
     }
+
+    const onClick = () => {
+        dispatch(setSelectedPane(text.toLowerCase() as SetPanePayload))
+    }
+    
     return (
         <div
             className='sidebar__content__item'
             onMouseEnter={() => toggleHoverEffect(true)}
             onMouseLeave={() => toggleHoverEffect(false)}
+            onClick={onClick}
         >
             <FontAwesomeIcon
                 className='icon'
@@ -40,6 +50,9 @@ const SideBarItem = ({ icon, text }: SideBarItemProps) => {
 }
 
 const Sidebar = () => {
+    const navigate = useNavigate()
+
+
     return (
         <div className='sidebar dashboard_content_modal'>
             <div className='sidebar__header'>

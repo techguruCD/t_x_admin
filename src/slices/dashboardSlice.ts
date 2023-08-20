@@ -1,12 +1,10 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-type SetPanePayload = {
-    selectedPane: 'ads' | 'users'
-}
-interface PaneState {
+type SetPanePayload =  'ads' | 'users'
+interface DashboardState {
     selectedPane: 'users' | 'ads'
 }
-const initialState: PaneState = {
+const initialState: DashboardState = {
     selectedPane: 'users'
 };
 
@@ -18,11 +16,11 @@ export const dashboardSlice = createSlice({
             state.selectedPane = 'users'
         },
         setSelectedPane: (state, action: PayloadAction<SetPanePayload>) => {
-            state.selectedPane = action.payload.selectedPane
+            state.selectedPane = action.payload
         },
     }
 });
 
 export const { reset, setSelectedPane } = dashboardSlice.actions;
-export type { PaneState }
+export type { DashboardState, SetPanePayload }
 export default dashboardSlice.reducer;
