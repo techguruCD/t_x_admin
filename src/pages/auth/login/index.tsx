@@ -18,7 +18,7 @@ const Login = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
-    const [login, { isSuccess, isError, error }] = useLoginMutation()
+    const [login, { isSuccess, error }] = useLoginMutation()
     const { accessToken, user } = useSelector((state: RootState) => state.auth)
 
 
@@ -33,6 +33,7 @@ const Login = () => {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             if ((error as any).error) toast.error((error as any).error);
 
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const apiError = error as any;
             const badRequestError =
                 apiError.status && apiError.status < 500 && apiError.data?.message;

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 interface UserDataInResponse {
     firstname: string;
     lastname: string;
