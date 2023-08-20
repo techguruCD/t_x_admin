@@ -1,10 +1,13 @@
 import { API_BASEURL } from '../constants';
 import {
     UserLoginData,
+    LoginResponse,
     SignupResponse,
     UserSignupData,
     VerifyEmailResponse,
-    VerifyEmailRequestParams
+    VerifyEmailRequestParams,
+    RetryVerifyEmailResponse,
+    RetryVerifyEmailRequestParams
 } from './types/authApi.types';
 import { apiSlice } from './api';
 
@@ -12,7 +15,7 @@ const AUTH_URL = API_BASEURL + '/auth';
 
 export const authApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        login: builder.mutation({
+        login: builder.mutation<LoginResponse, UserLoginData>({
             query: (credentials: UserLoginData) => ({
                 url: AUTH_URL + '/login',
                 method: 'POST',
@@ -34,9 +37,20 @@ export const authApiSlice = apiSlice.injectEndpoints({
                 body: { verification_code: credentials.verification_code },
                 headers: { Authorization: `Bearer ${credentials.access_token}` }
             })
+        }),
+        retryVerifyEmail: builder.mutation<RetryVerifyEmailResponse, RetryVerifyEmailRequestParams>({
+            query: (credentials: RetryVerifyEmailRequestParams) => ({
+                url: AUTH_URL + `/verificationemail?email=${credentials.email}`,
+                method: 'GET'
+            })
         })
     })
 })
 
 export type { UserSignupData, UserLoginData }
-export const { useLoginMutation, useSignupMutation, useVerifyEmailMutation } = authApiSlice;
+export const {
+    useLoginMutation,
+    useSignupMutation,
+    useVerifyEmailMutation,
+    useRetryVerifyEmailMutation,
+} = authApiSlice;

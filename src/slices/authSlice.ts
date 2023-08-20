@@ -22,10 +22,25 @@ const initialState: AuthState = {
     refreshToken: undefined
 };
 
-interface SetCredentialPayload {
-    user: User,
-    emailVerificationAccessToken: string,
+interface BasicAuthTokenPayload {
+    credentialType: 'basic',
+    accessToken: string,
+    refreshToken: string
 }
+interface EmailVerificationAuthTokenPayload {
+    credentialType: 'emailVerification',
+    emailVerificationAccessToken: string
+}
+interface PasswordResetAuthTokenPayload {
+    credentialType: 'passwordReset',
+    passwordResetAccessToken: string
+}
+type AuthTokenPayload = BasicAuthTokenPayload | EmailVerificationAuthTokenPayload | PasswordResetAuthTokenPayload
+
+type SetCredentialPayload = {
+    user: User,
+} & AuthTokenPayload
+
 interface User {
     firstname: string;
     lastname: string;
@@ -47,7 +62,19 @@ export const authSlice = createSlice({
         },
         setCredentials: (state, action: PayloadAction<SetCredentialPayload>) => {
             state.user = action.payload.user;
-            state.emailVerificationAccessToken = action.payload.emailVerificationAccessToken
+
+            switch (action.payload.credentialType) {
+                case 'basic':
+                    state.accessToken = action.payload.accessToken
+                    state.refreshToken = action.payload.refreshToken
+                    break;
+                case 'emailVerification':
+                    state.emailVerificationAccessToken = action.payload.emailVerificationAccessToken
+                    break;
+                case 'passwordReset':
+                    break;
+            }
+
             localStorage.setItem("user", JSON.stringify(action.payload));
         },
         logOut: (state) => {

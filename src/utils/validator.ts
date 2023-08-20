@@ -58,7 +58,7 @@ export const validateSignupData = (data: SignupData): SignupErrors => {
     if (!emailRegExp.test(data.email)) {
         errors.email = "Email must be a valid email address";
     }
-    
+
     const passwordValidatorResult = passwordValidator(data.password);
     if (passwordValidatorResult != 'valid') {
         errors.password = passwordValidatorResult;
@@ -70,3 +70,35 @@ export const validateSignupData = (data: SignupData): SignupErrors => {
 
     return errors;
 };
+
+type LoginDataValidatorResposne =
+    { isValid: true; } |
+    {
+        errors: {
+            email: string;
+            password: string;
+        };
+        isValid: false;
+    }
+interface LoginData {
+    email: string;
+    password: string;
+}
+export const validateLoginData = (data: LoginData): LoginDataValidatorResposne => {
+    const errors = {} as { email: string, password: string };
+
+    const emailRegExp = /\S+@\S+\.\S+/;
+    if (!emailRegExp.test(data.email)) {
+        errors.email = "Email must be a valid email address";
+    }
+
+    if (data.password.length < 1) {
+        errors.password = "Password is required";
+    }
+
+    if (Object.keys(errors).length > 0) {
+        return { isValid: false, errors };
+    }
+
+    return { isValid: true };
+}

@@ -32,8 +32,10 @@ const Signup = () => {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             if ((error as any).error) toast.error((error as any).error)
 
-            const badRequestError = (error.status != 500) && (error as any).data.message
-            if (badRequestError) toast.error((error as any).data.message)
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const apiError = error as any
+            const badRequestError = apiError.status && (apiError.status < 500) && apiError.data?.message
+            if (badRequestError) toast.error(apiError.data?.message)
             else toast.error('An error occured')
 
             dispatch(reset())
@@ -64,6 +66,7 @@ const Signup = () => {
         const signupResponse = await signup(signupData).unwrap()
         const credentials = {
             user: signupResponse.data.user,
+            credentialType: 'emailVerification' as const,
             emailVerificationAccessToken: signupResponse.data.access_token
         }
         dispatch(setCredentials(credentials))

@@ -3,9 +3,10 @@
     height: 70px;
     border-radius: 5px,;
     border: 1px solid var(--gray-203);
-    background-color: var(--primary);
+    background-color: var(--primary-400);
     transition: background-color 0.3s;
-    margin: 30px 0px;
+    margin-top: 30px;
+    margin-bottom: 10px;
 
     &:hover {
         background-color: var(--primary-500);
