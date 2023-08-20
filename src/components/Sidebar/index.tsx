@@ -54,9 +54,6 @@ const Sidebar = () => {
 
 
             <div className='sidebar__footer'>
-                <div className='sidebar__content'>
-                    <SideBarItem icon={faSignOutAlt} text='Logout' />
-                </div>
                 <div className='sidebar_admin_info'>
                     <img src='https://img.icons8.com/ios-glyphs/30/000000/user.png' alt='user' />
                     <h3 className='admin_name'> Admin </h3>
