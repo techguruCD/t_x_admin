@@ -17,10 +17,10 @@ const ForgotPassword = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
-    const [forgotPassword, { isSuccess, error, data }] = useForgotPasswordMutation()
+    const [forgotPassword, { isSuccess, error, data: forgotPasswordSuccessResponse }] = useForgotPasswordMutation()
     const [resetPassword, { isSuccess: resetPasswordSuccess, error: resetPasswordError }] = useResetPasswordMutation()
 
-    const { passwordResetAccessToken } = useSelector((state: RootState) => state.auth)
+    const { passwordResetToken } = useSelector((state: RootState) => state.auth)
 
     useEffect(() => {
         if (error) {
@@ -33,16 +33,22 @@ const ForgotPassword = () => {
                 apiError.status && apiError.status < 500 && apiError.data?.message;
             if (badRequestError) toast.error(apiError.data?.message);
             else toast.error("An error occured");
-
-            setEmail('');
         }
 
-        if (isSuccess) {
+        if (isSuccess && forgotPasswordSuccessResponse) {
             toast.success("Success, Password reset code sent to your email");
-            return navigate("/login");
+
+            const credentials = {
+                passwordResetToken: forgotPasswordSuccessResponse.data.access_token,
+                user: forgotPasswordSuccessResponse.data.user,
+                credentialType: 'passwordReset' as const
+            }
+            dispatch(setCredentials(credentials))
         }
 
-    }, [passwordResetAccessToken, navigate, isSuccess, error, data])
+        setEmail('');
+
+    }, [passwordResetToken, navigate, dispatch, isSuccess, error, forgotPasswordSuccessResponse])
 
     const handleContinue = async () => {
         // validate input
@@ -57,7 +63,7 @@ const ForgotPassword = () => {
             return
         }
 
-        const forgotPasswordResponse = await forgotPassword({ email }).unwrap()
+        await forgotPassword({ email }).unwrap()
     }
 
     return (

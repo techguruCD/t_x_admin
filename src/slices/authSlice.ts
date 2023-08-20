@@ -11,7 +11,7 @@ interface EmailVerificationAuthTokenPayload {
 }
 interface PasswordResetAuthTokenPayload {
     credentialType: 'passwordReset',
-    passwordResetAccessToken: string
+    passwordResetToken: string
 }
 type AuthTokenPayload = BasicAuthTokenPayload | EmailVerificationAuthTokenPayload | PasswordResetAuthTokenPayload
 
@@ -75,6 +75,7 @@ export const authSlice = createSlice({
                     state.emailVerificationToken = action.payload.emailVerificationToken
                     break;
                 case 'passwordReset':
+                    state.passwordResetToken = action.payload.passwordResetToken
                     break;
             }
 
