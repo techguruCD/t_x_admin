@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import './dashboardpane.scss'
 import { UserTable } from '../Datatable/userTable'
 import { useSelector } from 'react-redux'
@@ -32,13 +32,15 @@ type PaneId = 'ads' | 'users'
 const DasboardPane = () => {
     const [selectedPane, setSelectedPane] = useState<PaneId>('ads')
 
-    const [dashboard] = useSelector((state: RootState) => state.dashboad)
+    const dashboard = useSelector((state: RootState) => state.dashboard)
 
     useEffect(() => {
-        ))
+
+    }, [dashboard])
+
     return (
         <div className='dashboardpane_container'>
-            {selectedPane === 'ads' ? <AdsPane /> : <UsersPane />}
+            {dashboard.selectedPane === 'ads' ? <AdsPane /> : <UsersPane />}
         </div>
     )
 }
