@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 import './sidebar.scss'
-import { faUsers, faBullhorn, IconDefinition } from "@fortawesome/free-solid-svg-icons";
+import {
+    faUsers, faBullhorn, faSignOutAlt,
+    IconDefinition
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon, IconProp } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
 
@@ -13,15 +16,16 @@ const SideBarItem = ({ icon, text }: SideBarItemProps) => {
     const [sideBarItemHover, setSideBarItemHover] = useState(false)
     const [iconColor, setIconColor] = useState('bright')
 
-    function toggleHoverEffect() {
-        setSideBarItemHover(!sideBarItemHover)
+    function toggleHoverEffect(light: boolean) {
+        setSideBarItemHover(light)
         setIconColor(iconColor === 'bright' ? 'dark' : 'bright')
     }
     return (
         <div
             className='sidebar__content__item'
-            onMouseEnter={toggleHoverEffect}
-            onMouseLeave={toggleHoverEffect} >
+            onMouseEnter={() => toggleHoverEffect(true)}
+            onMouseLeave={() => toggleHoverEffect(false)}
+        >
             <FontAwesomeIcon
                 className='icon'
                 icon={icon}
@@ -48,15 +52,14 @@ const Sidebar = () => {
                 <SideBarItem icon={faBullhorn} text='Ads' />
             </div>
 
-            <div className='logout'>
-                <img src='https://img.icons8.com/ios-glyphs/30/000000/logout-rounded.png' alt='logout' />
-                <p> Logout </p>
-            </div>
 
             <div className='sidebar__footer'>
+                <div className='sidebar__content'>
+                    <SideBarItem icon={faSignOutAlt} text='Logout' />
+                </div>
                 <div className='sidebar_admin_info'>
                     <img src='https://img.icons8.com/ios-glyphs/30/000000/user.png' alt='user' />
-                    <p className='admin_name'> Admin </p>
+                    <h3 className='admin_name'> Admin </h3>
                     <p className='admin_email'> admin@genx.com</p>
                 </div>
             </div>
