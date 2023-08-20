@@ -28,6 +28,22 @@ export function passwordValidator(password: string) {
     return "valid";
 }
 
+export function validateEmail(email: string | undefined) {
+    const errors = {} as { email: string };
+
+    if (!email) {
+        errors.email = "Email is required";
+        return { isValid: false, errors };
+    }
+
+    const emailRegExp = /\S+@\S+\.\S+/;
+    if (!emailRegExp.test(email)) {
+        errors.email = "Email must be a valid email address";
+        return { isValid: false, errors };
+    }
+
+    return { isValid: true };
+}
 interface SignupErrors {
     firstname?: string;
     lastname?: string;
@@ -98,6 +114,17 @@ export const validateLoginData = (data: LoginData): LoginDataValidatorResposne =
 
     if (Object.keys(errors).length > 0) {
         return { isValid: false, errors };
+    }
+
+    return { isValid: true };
+}
+
+export const validateResetPasswordData = (passwordResetCode: number) => {
+    const errors = {} as { passwordResetCode: string };
+
+    if (passwordResetCode.toString().length !== 4) {
+        errors.passwordResetCode = "Password reset code must be 4 digits long";
+        return { isValid: false, errors }
     }
 
     return { isValid: true };

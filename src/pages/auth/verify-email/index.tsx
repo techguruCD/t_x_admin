@@ -22,7 +22,7 @@ const VerifyEmail = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const { emailVerificationAccessToken, user } = useSelector(
+    const { emailVerificationToken, user } = useSelector(
         (state: RootState) => state.auth
     );
     const [verifyEmail, { isLoading, isSuccess, error }] = useVerifyEmailMutation();
@@ -75,7 +75,7 @@ const VerifyEmail = () => {
             const updatedCredentials = {
                 user,
                 credentialType: 'emailVerification' as const,
-                emailVerificationAccessToken: resendVerEmailResponseData.data.access_token,
+                emailVerificationToken: resendVerEmailResponseData.data.access_token,
             };
 
             dispatch(setCredentials(updatedCredentials));
@@ -95,13 +95,13 @@ const VerifyEmail = () => {
             return toast.error("Please input the email verification code");
         }
 
-        if (!emailVerificationAccessToken) {
+        if (!emailVerificationToken) {
             return toast.error("Please login to continue");
         }
 
         await verifyEmail({
             verification_code: emailverificationCode,
-            access_token: emailVerificationAccessToken,
+            access_token: emailVerificationToken,
         }).unwrap();
     };
 
@@ -119,7 +119,7 @@ const VerifyEmail = () => {
         setEmailverificationCode(parseInt(event.target.value));
     };
 
-    if (!emailVerificationAccessToken) {
+    if (!emailVerificationToken) {
         navigate("/login");
     }
 

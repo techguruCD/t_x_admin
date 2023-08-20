@@ -60,3 +60,24 @@ export interface RetryVerifyEmailResponse extends SuccessResponse {
         access_token: string
     };
 }
+
+export interface ForgotPasswordRequestParams {
+    email: string;
+}
+export interface ForgotPasswordResponse extends SuccessResponse {
+    data: {
+        user: UserDataInResponse;
+        access_token: string
+    };
+}
+
+export interface ResetPasswordRequestParams {
+    password_reset_code: number;
+    new_password: string;
+    access_token: string
+}
+export interface ResetPasswordResponse extends SuccessResponse {
+    data: {
+        user: UserDataInResponse;
+    };
+}

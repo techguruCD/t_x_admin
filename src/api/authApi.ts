@@ -7,7 +7,11 @@ import {
     VerifyEmailResponse,
     VerifyEmailRequestParams,
     RetryVerifyEmailResponse,
-    RetryVerifyEmailRequestParams
+    RetryVerifyEmailRequestParams,
+    ForgotPasswordResponse,
+    ForgotPasswordRequestParams,
+    ResetPasswordResponse,
+    ResetPasswordRequestParams
 } from './types/authApi.types';
 import { apiSlice } from './api';
 
@@ -43,7 +47,24 @@ export const authApiSlice = apiSlice.injectEndpoints({
                 url: AUTH_URL + `/verificationemail?email=${credentials.email}`,
                 method: 'GET'
             })
-        })
+        }),
+        forgotPassword: builder.mutation<ForgotPasswordResponse, ForgotPasswordRequestParams>({
+            query: (credentials: ForgotPasswordRequestParams) => ({
+                url: AUTH_URL + '/forgotpassword',
+                method: 'POST',
+                body: { email: credentials.email }
+            })
+        }),
+        resetPassword: builder.mutation<ResetPasswordResponse, ResetPasswordRequestParams>({
+            query: (credentials: ResetPasswordRequestParams) => ({
+                url: AUTH_URL + '/resetpassword',
+                method: 'POST',
+                body: {
+                    new_password: credentials.new_password,
+                },
+                headers: { Authorization: `Bearer ${credentials.access_token}` }
+            })
+        }),
     })
 })
 
@@ -53,4 +74,6 @@ export const {
     useSignupMutation,
     useVerifyEmailMutation,
     useRetryVerifyEmailMutation,
+    useForgotPasswordMutation,
+    useResetPasswordMutation
 } = authApiSlice;

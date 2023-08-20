@@ -1,27 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-// Get user from local storage
-const user: User = JSON.parse(localStorage.getItem("user") as string);
-
-interface AuthState {
-    user: User | null,
-    isError: boolean,
-    isLoading: boolean,
-    isSuccess: boolean,
-    emailVerificationAccessToken?: string,
-    accessToken?: string,
-    refreshToken?: string,
-}
-const initialState: AuthState = {
-    user: user ? user : null,
-    isError: false,
-    isLoading: false,
-    isSuccess: false,
-    emailVerificationAccessToken: undefined,
-    accessToken: undefined,
-    refreshToken: undefined
-};
-
 interface BasicAuthTokenPayload {
     credentialType: 'basic',
     accessToken: string,
@@ -29,7 +7,7 @@ interface BasicAuthTokenPayload {
 }
 interface EmailVerificationAuthTokenPayload {
     credentialType: 'emailVerification',
-    emailVerificationAccessToken: string
+    emailVerificationToken: string
 }
 interface PasswordResetAuthTokenPayload {
     credentialType: 'passwordReset',
@@ -50,6 +28,27 @@ interface User {
     createdAt: string;
     updatedAt: string;
 }
+const user: User = JSON.parse(localStorage.getItem("user") as string);
+
+interface AuthState {
+    user: User | null,
+    isError: boolean,
+    isLoading: boolean,
+    isSuccess: boolean,
+    emailVerificationToken?: string,
+    passwordResetToken?: string,
+    accessToken?: string,
+    refreshToken?: string,
+}
+const initialState: AuthState = {
+    user: user ? user : null,
+    isError: false,
+    isLoading: false,
+    isSuccess: false,
+    emailVerificationToken: undefined,
+    accessToken: undefined,
+    refreshToken: undefined
+};
 
 export const authSlice = createSlice({
     name: "auth",
@@ -59,6 +58,10 @@ export const authSlice = createSlice({
             state.isError = false;
             state.isLoading = false;
             state.isSuccess = false;
+            state.accessToken = undefined
+            state.refreshToken = undefined
+            state.emailVerificationToken = undefined
+            state.passwordResetToken = undefined
         },
         setCredentials: (state, action: PayloadAction<SetCredentialPayload>) => {
             state.user = action.payload.user;
@@ -69,7 +72,7 @@ export const authSlice = createSlice({
                     state.refreshToken = action.payload.refreshToken
                     break;
                 case 'emailVerification':
-                    state.emailVerificationAccessToken = action.payload.emailVerificationAccessToken
+                    state.emailVerificationToken = action.payload.emailVerificationToken
                     break;
                 case 'passwordReset':
                     break;
