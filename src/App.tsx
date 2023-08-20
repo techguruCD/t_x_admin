@@ -6,6 +6,8 @@ import VerifyEmail from "./pages/auth/verify-email";
 import Login from "./pages/auth/login";
 import ForgotPassword from "./pages/auth/forgot-password";
 import ResetPassword from "./pages/auth/reset-password";
+import Dashboard from "./pages/dashboard";
+
 // import ResetPassword from "./pages/auth/reset-password";
 // import ForgotPassword from "./pages/auth/forgot-password";
 // import Layout from "./components/Layout";
@@ -27,6 +29,7 @@ function App() {
                     <Route path="/login" element={<Login />} />
                     <Route path="/forgotpassword" element={<ForgotPassword />} />
                     <Route path="/resetpassword" element={<ResetPassword />} />
+                    <Route path="/dashboard" element={<Dashboard />} />
                     {/* <Route path="/resetpassword" element={<ResetPassword />} />
                 <Route path="/forgotpassword" element={<ForgotPassword />} />
                 <Route path="*" element={<ErrorPage />} /> */}
