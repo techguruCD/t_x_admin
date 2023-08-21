@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { DetailedHTMLProps, HTMLAttributes, useState } from 'react'
 import {
     faUsers, faBullhorn, faSignOutAlt,
     IconDefinition
@@ -36,9 +36,10 @@ interface CustomButtonProps {
     icon: IconDefinition,
     text: string,
     style: Record<string, string>,
+    onClick?: (e: DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>) => void
 }
 
-const CustomButton = ({ icon, text, style }: CustomButtonProps) => {
+const CustomButton = ({ icon, text, style, onClick }: CustomButtonProps) => {
     const [customButtonItemHover, setSideBarItemHover] = useState(false)
 
     function toggleHoverEffect(light: boolean) {
@@ -50,6 +51,7 @@ const CustomButton = ({ icon, text, style }: CustomButtonProps) => {
             style={style}
             onMouseEnter={() => toggleHoverEffect(true)}
             onMouseLeave={() => toggleHoverEffect(false)}
+            onClick={onClick}
         >
             <FontAwesomeIcon
                 className='icon'

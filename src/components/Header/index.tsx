@@ -7,6 +7,8 @@ import {
 import { FontAwesomeIcon, IconProp } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { CustomButton } from '../Button';
+import { useDispatch } from 'react-redux';
+import { logOut } from '../../slices/authSlice';
 
 interface SideBarItemProps {
     icon: IconDefinition;
@@ -41,17 +43,24 @@ const SideBarItem = ({ icon, text }: SideBarItemProps) => {
 }
 
 const Header = () => {
+    const dispatch = useDispatch()
+    
+    const onClick = () => {
+        dispatch(logOut())
+    }
+
     return (
         <div className='header dashboard_content_modal'>
-           <div className='header_section left'></div>
-           <div className='header_section mid'></div>
-           <div className='header_section right'>
+            <div className='header_section left'></div>
+            <div className='header_section mid'></div>
+            <div className='header_section right'>
                 <CustomButton
                     icon={faSignOutAlt}
                     text='Logout'
                     style={{}}
+                    onClick={onClick}
                 />
-           </div>
+            </div>
         </div>
     )
 }
