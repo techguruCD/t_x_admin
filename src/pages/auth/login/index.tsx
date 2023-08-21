@@ -7,7 +7,7 @@ import Button from "../../../components/Button";
 import FormField from "../../../components/FormField";
 import { useLoginMutation } from "../../../api/authApi";
 import { RootState } from "../../../app/store";
-import { setCredentials } from "../../../slices/authSlice";
+import { setCredentials, reset, logOut } from "../../../slices/authSlice";
 import { toast } from "react-toastify";
 import { validateLoginData } from "../../../utils/validator";
 
@@ -18,9 +18,9 @@ const Login = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
-    const [login, { isSuccess, error }] = useLoginMutation()
-    const { accessToken, user } = useSelector((state: RootState) => state.auth)
-
+    const [login, { isSuccess, isError, error }] = useLoginMutation()
+    const loginData = useSelector((state: RootState) => state.auth)
+    const { user, accessToken, refreshToken } = loginData
 
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -39,16 +39,15 @@ const Login = () => {
                 apiError.status && apiError.status < 500 && apiError.data?.message;
             if (badRequestError) toast.error(apiError.data?.message);
             else toast.error("An error occured");
+
+            dispatch(reset())
+        } 
+
+        if (isSuccess && user && accessToken && refreshToken) {
+            toast.success('Login successful')
         }
 
-        if (user && accessToken) {
-            navigate('/dashboard')
-        }
-
-        if (isSuccess && user) {
-            navigate('/dashboard')
-        }
-    }, [isSuccess, dispatch, navigate, accessToken, user, error])
+    }, [isSuccess, isError, dispatch, navigate, accessToken, refreshToken, user, error])
 
     const handleSubmit = async () => {
         // Validate input
@@ -60,9 +59,6 @@ const Login = () => {
             if (errors.email) toast.error(errors.email);
             if (errors.password) toast.error(errors.password);
 
-            setEmail("")
-            setPassword("")
-            
             return;
         }
 
@@ -73,12 +69,9 @@ const Login = () => {
             user: loginResponse.data.user,
             credentialType: 'basic' as const
         }
-
         dispatch(setCredentials(credentials))
+        navigate('/dashboard')
     }
-
-    const alreadyAuthenticate = user && accessToken
-    if (alreadyAuthenticate) navigate('/dashboard')
 
     return (
         <Container>
@@ -91,10 +84,12 @@ const Login = () => {
                         <FormField
                             type='text' label='Email'
                             placeholder="" name="email"
+                            text={email}
                             onChange={onChange} />
                         <FormField
                             type='password' label='Password'
                             placeholder="" name="password"
+                            text={password}
                             onChange={onChange} />
                     </div>
 

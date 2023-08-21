@@ -50,9 +50,6 @@ const SideBarItem = ({ icon, text }: SideBarItemProps) => {
 }
 
 const Sidebar = () => {
-    // const navigate = useNavigate()
-
-
     return (
         <div className='sidebar dashboard_content_modal'>
             <div className='sidebar__header'>

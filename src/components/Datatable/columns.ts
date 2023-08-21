@@ -1,27 +1,12 @@
-type UserData = {
-    _id: string;
-    userId: string;
-    __v: number;
-    createdAt: string,
-    emailId: string,
-    photoUrl: string
-    refCode: string;
-    referrer: string;
-    updatedAt: string;
-    username: string;
-    discordUsername: string | undefined,
-    twitterUsername: string | undefined,
-    walletAddress: string | undefined;
-    id: string
-}
+import { UserInfoFromApi } from "../../api/types/userApi.types"
 
 interface Header {
     Header: string,
     Footer: string,
-    accessor: keyof UserData,
+    accessor: keyof UserInfoFromApi,
 }
 
-export type { Header, UserData }
+export type { Header, UserInfoFromApi }
 export const USER_COLUMNS = [
     {
         Header: "ID",

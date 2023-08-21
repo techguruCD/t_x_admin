@@ -1,4 +1,5 @@
 import { API_BASEURL } from '../constants';
+import { EndpointDefinitions } from '@reduxjs/toolkit/dist/query/react'
 import {
     UserLoginData,
     LoginResponse,
@@ -49,7 +50,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
         }),
         retryVerifyEmail: builder.mutation<RetryVerifyEmailResponse, RetryVerifyEmailRequestParams>({
             query: (credentials: RetryVerifyEmailRequestParams) => ({
-                url: AUTH_URL + `/verificationemail?email=${credentials.email.tolowerCase()}`,
+                url: AUTH_URL + `/verificationemail?email=${credentials.email.toLowerCase()}`,
                 method: 'GET'
             })
         }),

@@ -55,6 +55,7 @@ export const authSlice = createSlice({
     initialState: initialState,
     reducers: {
         reset: (state) => {
+            console.log('clearing state reset')
             state.isError = false;
             state.isLoading = false;
             state.isSuccess = false;
@@ -62,8 +63,12 @@ export const authSlice = createSlice({
             state.refreshToken = undefined
             state.emailVerificationToken = undefined
             state.passwordResetToken = undefined
+            state.user = null
+            localStorage.removeItem("user");
         },
         setCredentials: (state, action: PayloadAction<SetCredentialPayload>) => {
+            console.log('thisis the payload')
+            console.log(action.payload)
             state.user = action.payload.user;
 
             switch (action.payload.credentialType) {
@@ -79,9 +84,10 @@ export const authSlice = createSlice({
                     break;
             }
 
-            localStorage.setItem("user", JSON.stringify(action.payload));
+            localStorage.setItem("user", JSON.stringify(action.payload.user));
         },
         logOut: (state) => {
+            console.log('clearing state logour')
             state.user = null
             state.accessToken = ''
             state.refreshToken = ''
