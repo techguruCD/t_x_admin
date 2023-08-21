@@ -17,13 +17,15 @@ const AdsPane = () => {
 }
 
 const UsersPane = () => {
+    const [userCount, setUserCount] = useState(0)
+
     return (
         <div className='dashboardpane'>
             <section className='__header'>
                 <h1> Users </h1>
-                <h2> 200 total </h2>
+                <h2> {userCount} total </h2>
             </section>
-            <UserTable />
+            <UserTable setUserCount={setUserCount}/>
         </div>
     )
 }

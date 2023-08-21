@@ -39,6 +39,7 @@ interface AuthState {
     passwordResetToken?: string,
     accessToken?: string,
     refreshToken?: string,
+    isLoggedIn: boolean
 }
 const initialState: AuthState = {
     user: user ? user : null,
@@ -47,7 +48,8 @@ const initialState: AuthState = {
     isSuccess: false,
     emailVerificationToken: undefined,
     accessToken: undefined,
-    refreshToken: undefined
+    refreshToken: undefined,
+    isLoggedIn: false
 };
 
 export const authSlice = createSlice({
@@ -73,6 +75,7 @@ export const authSlice = createSlice({
                 case 'basic':
                     state.accessToken = action.payload.accessToken
                     state.refreshToken = action.payload.refreshToken
+                    state.isLoggedIn = true
                     break;
                 case 'emailVerification':
                     state.emailVerificationToken = action.payload.emailVerificationToken
@@ -89,6 +92,9 @@ export const authSlice = createSlice({
             state.user = null
             state.accessToken = ''
             state.refreshToken = ''
+            state.emailVerificationToken = ''
+            state.passwordResetToken = ''
+            state.isLoggedIn = false
             localStorage.removeItem("user");
         }
     }

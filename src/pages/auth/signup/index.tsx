@@ -28,7 +28,6 @@ const Signup = () => {
 
     useEffect(() => {
         if (error) {
-            console.log(error)
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             if ((error as any).error) toast.error((error as any).error)
 

@@ -2,9 +2,10 @@
     display: flex;
     flex-direction: column;
     align-items: left;
-    width: 400px;
+    width: 300px;
+    height: 100%;
     margin: 10px;
-    padding: 40px 20px;
+    padding: 20px 10px;
     border-top-right-radius: 10px;
     border-top-left-radius: 10px;
 
@@ -15,12 +16,19 @@
         justify-content: left;
         margin-bottom: 30px;
         border-bottom: 1px solid var(--gray-203);
-        padding: 30px;
+        padding: 15px;
 
         img {
-            width: 60px;
-            height: 60px;
+            width: 48px;
+            height: 48px;
             margin-right: 10px;
+        }
+
+        h1 {
+            font-size: 30px;
+            font-weight: 500;
+            line-height: 17px;
+            color: var(--primary);
         }
     }
 
@@ -31,15 +39,15 @@
         justify-content: left;
         margin-top: 20px;
         width: 100%;
-        // height: 100%;
+        height: 100%;
 
         .sidebar__content__item {
             display: flex;
             flex-direction: row;
             align-items: center;
             justify-content: left;
-            margin: 20px 0px;
-            padding: 20px 30px;
+            margin: 10px 5px;
+            padding: 10px 15px;
             border-radius: 40px;
             transition: background-color 0.3s;
             
@@ -50,9 +58,9 @@
             }
 
             .icon {
-                width: 30px;
-                height: 30px;
-                margin-right: 30px;
+                width: 24px;
+                height: 24px;
+                margin-right: 15px;
                 transition: background-color 0.3s;
             }
 
@@ -88,8 +96,8 @@
         justify-content: center;
 
         img {
-            width: 50px;
-            height: 50px;
+            width: 24px;
+            height: 24px;
             border-radius: 50%;
             margin-bottom: 20px;
         }
@@ -99,7 +107,7 @@
         }
 
         p {
-            font-size: 16px;
+            font-size: 13px;
             font-weight: 500;
             line-height: 17px;
             color: var(--gray);

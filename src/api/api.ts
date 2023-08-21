@@ -39,6 +39,7 @@ const baseQueryWithReAuth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
 
             const credentials = {
                 ...authState, accessToken: access_token,
+                isLoggedIn: true,
                 credentialType: 'basic',
             } as SetCredentialPayload & BasicAuthTokenPayload;
             api.dispatch(setCredentials(credentials));

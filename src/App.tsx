@@ -17,22 +17,21 @@ import Dashboard from "./pages/dashboard";
 import { BrowserRouter } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import AuthenticatedRoutes from "./components/AuthenticatedRoute";
 
 function App() {
     return (
         <>
             <BrowserRouter>
                 <Routes>
-                    {/* <Route path="/login" element={<Login />} /> */}
+                    <Route element={<AuthenticatedRoutes />}>
+                        <Route path="/dashboard" element={<Dashboard />} />
+                    </Route>
                     <Route path="/signup" element={<Signup />} />
                     <Route path="/verifyemail" element={<VerifyEmail />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/forgotpassword" element={<ForgotPassword />} />
                     <Route path="/resetpassword" element={<ResetPassword />} />
-                    <Route path="/dashboard" element={<Dashboard />} />
-                    {/* <Route path="/resetpassword" element={<ResetPassword />} />
-                <Route path="/forgotpassword" element={<ForgotPassword />} />
-                <Route path="*" element={<ErrorPage />} /> */}
                 </Routes>
             </BrowserRouter>
             <ToastContainer />

@@ -1,17 +1,14 @@
-import React, { useState, useMemo, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useTable, usePagination, TableInstance, TableOptions, Column, TableState, UsePaginationInstanceProps } from 'react-table'
+import { useState, useMemo, useEffect } from 'react'
+import { useTable, usePagination, Column } from 'react-table'
 import { USER_COLUMNS, UserInfoFromApi } from './columns'
 import './table.scss'
 import { useGetUsersQuery } from '../../api/userApi'
-import { useSelector } from 'react-redux'
-import { RootState } from '../../app/store'
 import { toast } from 'react-toastify';
 
-function handleError(error: any) {
-
+interface UserTableProps {
+    setUserCount: React.Dispatch<React.SetStateAction<number>>
 }
-export const UserTable = () => {
+export const UserTable = ({ setUserCount }: UserTableProps) => {
     const [usersData, setUsersData] = useState<UserInfoFromApi[]>([])
     const { data: apiData, isLoading, error } = useGetUsersQuery([])
 
@@ -25,7 +22,6 @@ export const UserTable = () => {
 
     useEffect(() => {
         if (apiData?.data?.users) {
-            console.log(apiData.data)
             setUsersData(apiData.data.users)
         }
 
@@ -44,7 +40,14 @@ export const UserTable = () => {
         return
     }, [apiData, error])
 
-    const tableData = useMemo(() => usersData, [usersData])
+    useEffect(() => {
+        setUserCount(usersData.length)
+    }, [usersData, setUserCount])
+
+    const tableData = useMemo(() => {
+        setUsersData(usersData)
+        return usersData
+    }, [usersData, setUsersData])
 
     const tableInstance = useTable({ columns, data: tableData }, usePagination)
     const {
@@ -60,57 +63,57 @@ export const UserTable = () => {
         <div>
             {tableData.length > 1 && (
                 <div>
-                    <table {...getTableProps()}>
-                        <thead>
-                            {headerGroups.map(headerGroup => (
-                                <tr {...headerGroup.getHeaderGroupProps()}>
-                                    {headerGroup.headers.map(column => (
-                                        <th {...column.getHeaderProps()}>
-                                            {column.render('Header')}
-
-                                        </th>
-                                    ))}
-                                </tr>
-                            ))}
-
-                        </thead>
-                        <tbody {...getTableBodyProps()}>
-                            {page.map(row => {
-                                prepareRow(row)
-                                return (
-                                    <tr {...row.getRowProps()}>
-                                        {row.cells.map(cell => {
-                                            return (
-                                                <td {...cell.getCellProps()}>
-                                                    {cell.render('Cell')}
-                                                </td>
-                                            )
-                                        })}
+                    <div className='table_area'>
+                        <table {...getTableProps()}>
+                            <thead>
+                                {headerGroups.map(headerGroup => (
+                                    <tr {...headerGroup.getHeaderGroupProps()}>
+                                        {headerGroup.headers.map(column => (
+                                            <th {...column.getHeaderProps()}>
+                                                {column.render('Header')}
+                                            </th>
+                                        ))}
                                     </tr>
-                                )
-                            })}
-                        </tbody>
-                        <tfoot>
-                            {footerGroups.map(footerGroup => (
-                                <tr {...footerGroup.getFooterGroupProps()}>
-                                    {footerGroup.headers.map(column => (
-                                        <td {...column.getFooterProps()}>
-                                            {column.render('Footer')}
-                                        </td>
-                                    ))}
-                                </tr>
-                            ))}
-                        </tfoot>
-                    </table>
-                    <div className='page_control'>
-                        <span>
-                            Page{' '}
-                            <strong>
-                                {pageIndex + 1} of {pageOptions.length}
-                            </strong>{' '}
+                                ))}
 
-                        </span>
-                        {/* <select value={pageSize} onChange={e => setPageSize(Number(e.target.value))}>
+                            </thead>
+                            <tbody {...getTableBodyProps()}>
+                                {page.map(row => {
+                                    prepareRow(row)
+                                    return (
+                                        <tr {...row.getRowProps()}>
+                                            {row.cells.map(cell => {
+                                                return (
+                                                    <td {...cell.getCellProps()}>
+                                                        {cell.render('Cell')}
+                                                    </td>
+                                                )
+                                            })}
+                                        </tr>
+                                    )
+                                })}
+                            </tbody>
+                            <tfoot>
+                                {footerGroups.map(footerGroup => (
+                                    <tr {...footerGroup.getFooterGroupProps()}>
+                                        {footerGroup.headers.map(column => (
+                                            <td {...column.getFooterProps()}>
+                                                {column.render('Footer')}
+                                            </td>
+                                        ))}
+                                    </tr>
+                                ))}
+                            </tfoot>
+                        </table>
+                        <div className='page_control'>
+                            <span>
+                                Page{' '}
+                                <strong>
+                                    {pageIndex + 1} of {pageOptions.length}
+                                </strong>{' '}
+
+                            </span>
+                            {/* <select value={pageSize} onChange={e => setPageSize(Number(e.target.value))}>
                     {
                         [10, 25, 50].map(pageSize => (
                             <option key={pageSize} value={pageSize}>
@@ -120,8 +123,9 @@ export const UserTable = () => {
 
                     }
                 </select> */}
-                        <button onClick={() => previousPage()} disabled={!canPreviousPage}>Previous</button>
-                        <button onClick={() => nextPage()} disabled={!canNextPage}>Next</button>
+                            <button onClick={() => previousPage()} disabled={!canPreviousPage}>Previous</button>
+                            <button onClick={() => nextPage()} disabled={!canNextPage}>Next</button>
+                        </div>
                     </div>
                 </div>
             )}
