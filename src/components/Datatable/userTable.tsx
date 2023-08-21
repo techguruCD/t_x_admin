@@ -44,21 +44,21 @@ export const UserTable = () => {
         return
     }, [apiData, error])
 
-    // const tableData = useMemo(() => usersData, [usersData])
+    const tableData = useMemo(() => usersData, [usersData])
 
-    const tableInstance = useTable({ columns, data: usersData }, usePagination)
+    const tableInstance = useTable({ columns, data: tableData }, usePagination)
     const {
         getTableProps, getTableBodyProps,
         headerGroups, prepareRow,
         footerGroups,
     } = tableInstance
     const { page, state, nextPage, previousPage,
-        canNextPage, canPreviousPage } = tableInstance as any
-    const { pageIndex, pageOptions } = state
+        canNextPage, canPreviousPage, pageOptions } = tableInstance as any
+    const { pageIndex } = state
 
     return (
         <div>
-            {usersData.length > 1 && (
+            {tableData.length > 1 && (
                 <div>
                     <table {...getTableProps()}>
                         <thead>
