@@ -27,10 +27,5 @@ export const USER_COLUMNS = [
         Header: "Referral code",
         Footer: "Referral code",
         accessor: "refCode",
-    },
-    {
-        Header: "Wallet",
-        Footer: "Wallet",
-        accessor: "walletAddress",
     }
 ]
