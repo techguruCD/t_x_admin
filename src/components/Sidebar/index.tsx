@@ -7,8 +7,9 @@ import {
 import { FontAwesomeIcon, IconProp } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { useSelector, useDispatch } from 'react-redux'
-import { AppDispatch } from '../../app/store';
+import { AppDispatch, RootState } from '../../app/store';
 import { SetPanePayload, setSelectedPane } from '../../slices/dashboardSlice';
+import { Navigate, useNavigate} from 'react-router-dom';
 
 interface SideBarItemProps {
     icon: IconDefinition;
@@ -50,6 +51,11 @@ const SideBarItem = ({ icon, text }: SideBarItemProps) => {
 }
 
 const Sidebar = () => {
+    const { user, isLoggedIn } = useSelector((state: RootState) => state.auth)
+    const navigate = useNavigate()
+    
+    if (!isLoggedIn || !user) return navigate('/login')
+
     return (
         <div className='sidebar dashboard_content_modal'>
             <div className='sidebar__header'>
@@ -66,8 +72,8 @@ const Sidebar = () => {
             <div className='sidebar__footer'>
                 <div className='sidebar_admin_info'>
                     <img src='https://img.icons8.com/ios-glyphs/30/000000/user.png' alt='user' />
-                    <h3 className='admin_name'> Admin </h3>
-                    <p className='admin_email'> admin@genx.com</p>
+                    <h3 className='admin_name'> {user?.firstname + '  ' + user.lastname} </h3>
+                    <p className='admin_email'> {user.email}</p>
                 </div>
             </div>
         </div>
