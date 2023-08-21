@@ -52,9 +52,8 @@ const SideBarItem = ({ icon, text }: SideBarItemProps) => {
 
 const Sidebar = () => {
     const { user, isLoggedIn } = useSelector((state: RootState) => state.auth)
-    const navigate = useNavigate()
     
-    if (!isLoggedIn || !user) return navigate('/login')
+    // if (!isLoggedIn || !user) return <Navigate to='/login' />
 
     return (
         <div className='sidebar dashboard_content_modal'>

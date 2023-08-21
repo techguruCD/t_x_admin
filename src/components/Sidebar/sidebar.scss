@@ -47,11 +47,11 @@
             flex-direction: row;
             align-items: center;
             justify-content: left;
-            margin: 10px 5px;
+            margin: 20px 5px;
             padding: 10px 15px;
             border-radius: 40px;
             transition: background-color 0.3s;
-            
+
             &:hover {
                 cursor: pointer;
                 background-color: var(--primary);
@@ -77,6 +77,7 @@
                 }
             }
         }
+
         .logout {
             border-top: 1px solid var(--gray-203);
             display: none
@@ -113,5 +114,8 @@
             line-height: 17px;
             color: var(--gray);
         }
+
     }
+    
+  
 }

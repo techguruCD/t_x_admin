@@ -72,6 +72,12 @@ export const authApiSlice = apiSlice.injectEndpoints({
                 headers: { Authorization: `Bearer ${credentials.access_token}` }
             })
         }),
+        refreshToken: builder.query<LoginResponse, null>({
+            query: () => ({
+                url: AUTH_URL + '/authtoken',
+                method: 'GET',
+            })
+        })
     })
 })
 
@@ -82,5 +88,6 @@ export const {
     useVerifyEmailMutation,
     useRetryVerifyEmailMutation,
     useForgotPasswordMutation,
-    useResetPasswordMutation
+    useResetPasswordMutation,
+    useRefreshTokenQuery,
 } = authApiSlice;

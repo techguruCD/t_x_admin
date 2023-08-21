@@ -75,7 +75,7 @@ export const authSlice = createSlice({
                 case 'basic':
                     state.accessToken = action.payload.accessToken
                     state.refreshToken = action.payload.refreshToken
-                    state.isLoggedIn = true
+                    state.isLoggedIn = action.payload.accessToken ? true : false
                     break;
                 case 'emailVerification':
                     state.emailVerificationToken = action.payload.emailVerificationToken
@@ -86,6 +86,11 @@ export const authSlice = createSlice({
             }
 
             localStorage.setItem("user", JSON.stringify(action.payload.user));
+        },
+        setAuth: (state, action: PayloadAction<{ accessToken: string, refreshToken?: string}>) => {
+            state.accessToken = action.payload.accessToken
+            state.refreshToken = state.refreshToken ? state.refreshToken : action.payload.refreshToken
+            state.isLoggedIn = action.payload.accessToken ? true : false
         },
         logOut: (state) => {
             console.log('clearing state logour')
@@ -100,6 +105,6 @@ export const authSlice = createSlice({
     }
 });
 
-export const { reset, setCredentials, logOut } = authSlice.actions;
+export const { reset, setCredentials, logOut, setAuth } = authSlice.actions;
 export type { AuthState, SetCredentialPayload, User, AuthTokenPayload, BasicAuthTokenPayload, EmailVerificationAuthTokenPayload, PasswordResetAuthTokenPayload }
 export default authSlice.reducer;
