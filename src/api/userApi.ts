@@ -5,7 +5,6 @@ import {
     GetUserInfoResponse,
     GetUserInfoRequestParams,
     GetUsersResponse,
-    GetUsersRequestParams
 } from './types/userApi.types'
 
 const USER_URL = API_BASEURL + '/user'
@@ -14,13 +13,10 @@ export const userApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getUserInfo: builder.query<GetUserInfoResponse, GetUserInfoRequestParams>({
             query: (credentials: GetUserInfoRequestParams) => {
-                console.log('logging access token')
-                console.log(credentials.access_token)
                 let query_url = '/userinfo'
 
                 const { user_id, user_name, email_id, twitter_username,
                     discord_username, wallet_address, ref_code, referrer,
-                    access_token
                 } = credentials
 
                 if (user_id) query_url += `?user_id=${user_id}`
@@ -35,19 +31,13 @@ export const userApiSlice = apiSlice.injectEndpoints({
                 return {
                     url: USER_URL + query_url,
                     method: 'GET',
-                    headers: {
-                        Authorization: `Bearer ${access_token}`
-                    }
                 }
             }
         }),
-        getUsers: builder.query<GetUsersResponse, GetUsersRequestParams>({
-            query: ({ access_token }: GetUserInfoRequestParams) => ({
+        getUsers: builder.query<GetUsersResponse, null>({
+            query: () => ({
                 url: USER_URL,
-                method: 'GET',
-                headers: {
-                    Authorization: `Bearer ${access_token}`
-                }
+                method: 'GET'
             })
         }),
     })

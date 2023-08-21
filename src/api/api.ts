@@ -25,15 +25,13 @@ const baseQuery: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> =
 const baseQueryWithReAuth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> = async (args, api, extraOptions) => {
     let result = await baseQuery(args, api, extraOptions)
 
-
-    const invalidAuthorization = result.error?.data?.message === 'Invalid authorization header'
+    const invalidAuthorization = (result.error?.data as any)?.message === 'Invalid authorization header'
     const badAuth = invalidAuthorization && result.error?.status === 401
     if (badAuth) {
         const refreshResult = await baseQuery({
             url: '/auth/authtoken',
             method: 'GET'
         }, api, extraOptions) as QueryReturnValue<RefreshResponse, unknown>;
-        console.log(refreshResult);
 
         if (refreshResult.data) {
             const authState = (api.getState() as RootState).auth;
@@ -41,7 +39,7 @@ const baseQueryWithReAuth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
 
             const credentials = {
                 ...authState, accessToken: access_token,
-                credentialType: 'basic', 
+                credentialType: 'basic',
             } as SetCredentialPayload & BasicAuthTokenPayload;
             api.dispatch(setCredentials(credentials));
 
@@ -53,12 +51,10 @@ const baseQueryWithReAuth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
 
     return result;
 }
-interface RefreshResponse {
 
+interface RefreshResponse {
     data: {
         access_token: string;
-        refresh_token: string;
-        // Add other properties
     };
 }
 

@@ -31,7 +31,6 @@ interface GetUserInfoRequestParams {
     wallet_address?: string;
     ref_code?: string;
     referrer?: string;
-    access_token: string;
 }
 interface GetUserInfoResponse extends SuccessResponse {
     data: {
@@ -39,9 +38,6 @@ interface GetUserInfoResponse extends SuccessResponse {
     }
 }
 
-interface GetUsersRequestParams {
-    access_token: string
-}
 interface GetUsersResponse extends SuccessResponse {
     data: {
         users: UserInfoFromApi[]
@@ -52,6 +48,5 @@ export type {
     UserInfoFromApi,
     GetUserInfoRequestParams,
     GetUserInfoResponse,
-    GetUsersRequestParams,
     GetUsersResponse
 }
