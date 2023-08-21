@@ -23,8 +23,7 @@ export const UserTable = () => {
         }))
     }, []) as Column<TableInstance<UserInfoFromApi>>[]
 
-    const data = useEffect(() => {
-        console.log(apiData)
+    useEffect(() => {
         if (error) {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             if ((error as any).error) toast.error((error as any).error)
@@ -38,7 +37,6 @@ export const UserTable = () => {
 
         if (apiData) {
             const { users } = apiData.data
-            console.log('setting users')
             setUsersData(users)
         }
     }, [apiData, error])
@@ -53,8 +51,6 @@ export const UserTable = () => {
         setPageSize
     } = useTable<TableInstance<UserInfoFromApi>>({ columns, data: usersData }, usePagination)
     const { pageIndex, pageSize } = state
-    // setPageSize(20)
-    // const { globalFilter } = state
 
     return (
         <div>

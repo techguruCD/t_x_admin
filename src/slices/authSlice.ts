@@ -97,5 +97,5 @@ export const authSlice = createSlice({
 });
 
 export const { reset, setCredentials, logOut } = authSlice.actions;
-export type { AuthState }
+export type { AuthState, SetCredentialPayload, User, AuthTokenPayload, BasicAuthTokenPayload, EmailVerificationAuthTokenPayload, PasswordResetAuthTokenPayload }
 export default authSlice.reducer;
