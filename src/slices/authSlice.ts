@@ -67,8 +67,6 @@ export const authSlice = createSlice({
             localStorage.removeItem("user");
         },
         setCredentials: (state, action: PayloadAction<SetCredentialPayload>) => {
-            console.log('thisis the payload')
-            console.log(action.payload)
             state.user = action.payload.user;
 
             switch (action.payload.credentialType) {

@@ -1,10 +1,10 @@
-import { createApi, fetchBaseQuery, BaseQueryFn, FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
+import { createApi, fetchBaseQuery, BaseQueryFn, FetchBaseQueryError, FetchArgs } from '@reduxjs/toolkit/query/react';
 import { API_BASEURL } from '../constants';
 import { setCredentials, logOut, BasicAuthTokenPayload, SetCredentialPayload } from '../slices/authSlice';
 import { RootState } from '../app/store';
 import { QueryReturnValue } from '@reduxjs/toolkit/dist/query/baseQueryTypes';
 
-const baseQuery: BaseQueryFn<unknown, unknown, FetchBaseQueryError> = async (args, api, extraOptions) => {
+const baseQuery: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> = async (args, api, extraOptions) => {
     const { getState } = api;
     const token = (getState() as RootState).auth.accessToken;
 
@@ -22,14 +22,15 @@ const baseQuery: BaseQueryFn<unknown, unknown, FetchBaseQueryError> = async (arg
     return result;
 };
 
-const baseQueryWithReAuth: BaseQueryFn<unknown, unknown, FetchBaseQueryError> = async (args, api, extraOptions) => {
+const baseQueryWithReAuth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> = async (args, api, extraOptions) => {
     let result = await baseQuery(args, api, extraOptions)
 
-    if (result.error?.status === 403) {
-        console.log('requesting access token');
 
+    const invalidAuthorization = result.error?.data?.message === 'Invalid authorization header'
+    const badAuth = invalidAuthorization && result.error?.status === 401
+    if (badAuth) {
         const refreshResult = await baseQuery({
-            url: '/authtoken',
+            url: '/auth/authtoken',
             method: 'GET'
         }, api, extraOptions) as QueryReturnValue<RefreshResponse, unknown>;
         console.log(refreshResult);
@@ -40,7 +41,7 @@ const baseQueryWithReAuth: BaseQueryFn<unknown, unknown, FetchBaseQueryError> = 
 
             const credentials = {
                 ...authState, accessToken: access_token,
-                credentialType: 'basic',
+                credentialType: 'basic', 
             } as SetCredentialPayload & BasicAuthTokenPayload;
             api.dispatch(setCredentials(credentials));
 
