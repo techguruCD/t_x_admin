@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useTable, usePagination, TableInstance, Column } from 'react-table'
+import { useTable, usePagination, TableInstance, TableOptions, Column, TableState, UsePaginationInstanceProps } from 'react-table'
 import { USER_COLUMNS, UserInfoFromApi } from './columns'
 import './table.scss'
 import { useGetUsersQuery } from '../../api/userApi'
@@ -8,12 +8,12 @@ import { useSelector } from 'react-redux'
 import { RootState } from '../../app/store'
 import { toast } from 'react-toastify';
 
+function handleError(error: any) {
+
+}
 export const UserTable = () => {
     const [usersData, setUsersData] = useState<UserInfoFromApi[]>([])
-    const { accessToken } = useSelector((state: RootState) => state.auth)
-    const navigate = useNavigate()
-
-    const { data: apiData, isLoading, isSuccess, error } = useGetUsersQuery({ access_token: accessToken as string })
+    const { data: apiData, isLoading, error } = useGetUsersQuery([])
 
     const columns = useMemo(() => {
         return USER_COLUMNS.map(header => ({
@@ -21,36 +21,40 @@ export const UserTable = () => {
             Footer: header.Footer,
             accessor: header.accessor as keyof UserInfoFromApi,
         }))
-    }, []) as Column<TableInstance<UserInfoFromApi>>[]
+    }, []) as Column<UserInfoFromApi>[]
 
     useEffect(() => {
+        if (apiData?.data?.users) {
+            console.log(apiData.data)
+            setUsersData(apiData.data.users)
+        }
+
         if (error) {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            if ((error as any).error) toast.error((error as any).error)
+            if (error) {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                if ((error as any).error) toast.error((error as any).error)
 
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const apiError = error as any
-            const badRequestError = apiError.status && (apiError.status < 500) && apiError.data?.message
-            if (badRequestError) toast.error(apiError.data?.message)
-            else toast.error('An error occured')
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                const apiError = error as any
+                const badRequestError = apiError.status && (apiError.status < 500) && apiError.data?.message
+                if (badRequestError) toast.error(apiError.data?.message)
+                else toast.error('An error occured')
+            }
         }
-
-        if (apiData) {
-            const { users } = apiData.data
-            setUsersData(users)
-        }
+        return
     }, [apiData, error])
 
+    // const tableData = useMemo(() => usersData, [usersData])
+
+    const tableInstance = useTable({ columns, data: usersData }, usePagination)
     const {
         getTableProps, getTableBodyProps,
         headerGroups, prepareRow,
         footerGroups,
-        page, nextPage, previousPage,
-        canNextPage, canPreviousPage,
-        pageOptions, state,
-        setPageSize
-    } = useTable<TableInstance<UserInfoFromApi>>({ columns, data: usersData }, usePagination)
-    const { pageIndex, pageSize } = state
+    } = tableInstance
+    const { page, state, nextPage, previousPage,
+        canNextPage, canPreviousPage } = tableInstance as any
+    const { pageIndex, pageOptions } = state
 
     return (
         <div>
