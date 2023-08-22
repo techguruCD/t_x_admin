@@ -1,28 +1,28 @@
 import { useState, useMemo, useEffect } from 'react'
 import { useTable, usePagination, Column } from 'react-table'
-import { USER_COLUMNS, UserInfoFromApi } from './columns'
+import { ADS_COLUMNS, AdInfoFromApi } from './columns'
 import './table.scss'
-import { useGetUsersQuery } from '../../api/userApi'
+import { useGetAdsQuery } from '../../api/adApi'
 import { toast } from 'react-toastify';
 
-interface UserTableProps {
-    setUserCount: React.Dispatch<React.SetStateAction<number>>
+interface AdTableProps {
+    setAdCount: React.Dispatch<React.SetStateAction<number>>
 }
-export const UserTable = ({ setUserCount }: UserTableProps) => {
-    const [usersData, setUsersData] = useState<UserInfoFromApi[]>([])
-    const { data: apiData, isLoading, error } = useGetUsersQuery([])
+export const AdsTable = ({ setAdCount }: AdTableProps) => {
+    const [adsData, setAdsData] = useState<AdInfoFromApi[]>([])
+    const { data: apiData, isLoading, error } = useGetAdsQuery([])
 
     const columns = useMemo(() => {
-        return USER_COLUMNS.map(header => ({
+        return ADS_COLUMNS.map(header => ({
             Header: header.Header,
             Footer: header.Footer,
-            accessor: header.accessor as keyof UserInfoFromApi,
+            accessor: header.accessor as keyof AdInfoFromApi,
         }))
-    }, []) as Column<UserInfoFromApi>[]
+    }, []) as Column<AdInfoFromApi>[]
 
     useEffect(() => {
-        if (apiData?.data?.users) {
-            setUsersData(apiData.data.users)
+        if (apiData?.data?.ads) {
+            setAdsData(apiData.data.ads)
         }
 
         if (error) {
@@ -42,13 +42,13 @@ export const UserTable = ({ setUserCount }: UserTableProps) => {
 
 
     useEffect(() => {
-        setUserCount(usersData.length)
-    }, [usersData, setUserCount])
+        setAdCount(adsData.length)
+    }, [adsData, setAdCount])
 
     const tableData = useMemo(() => {
-        setUsersData(usersData)
-        return usersData
-    }, [usersData, setUsersData])
+        setAdsData(adsData)
+        return adsData
+    }, [adsData, setAdsData])
 
     const tableInstance = useTable({ columns, data: tableData }, usePagination)
     const {
@@ -147,7 +147,7 @@ export const UserTable = ({ setUserCount }: UserTableProps) => {
                 </div>
             )}
             {isLoading && <div>Loading...</div>}
-            {!isLoading && usersData.length === 0 && <div>No users found</div>}
+            {!isLoading && adsData.length === 0 && <div>No ads found</div>}
 
         </div>
     )
