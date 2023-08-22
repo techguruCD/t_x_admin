@@ -6,11 +6,18 @@ import { QueryReturnValue } from '@reduxjs/toolkit/dist/query/baseQueryTypes';
 
 const baseQuery: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> = async (args, api, extraOptions) => {
     const { getState } = api;
-    const token = (getState() as RootState).auth.accessToken;
+    let token = (getState() as RootState).auth.accessToken;
+
+    // These routes have thier custom token for authentication
+    if (api.endpoint === 'verifyEmail') {
+        token = (getState() as RootState).auth.emailVerificationToken
+    } else if (api.endpoint === 'resetPassword') {
+        token = (getState() as RootState).auth.passwordResetToken
+    }
 
     const headers = new Headers();
     if (token) {
-        headers.set('authorization', `Bearer ${token}`);
+        headers.set('Authorization', `Bearer ${token}`);
     }
 
     const result = await fetchBaseQuery({
