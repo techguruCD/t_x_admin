@@ -48,19 +48,28 @@ const AdModalForView = (props: ViewAdsDataProps) => {
 }
 const AdModalForEdit = (props: UpdateAdsDataProps) => {
     const { adData, onClose, setAdDataAfterSavedEdit } = props
+    const [upData, setUpData] = useState({})
     const [editedAdData, setEditedAdData] = useState<AdInfoFromApi>(adData);
     const [updateAdData] = useUpdateAdMutation()
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        const newData = { ...editedAdData, [name]: value };
-        console.log(newData)
-        setEditedAdData(prevData => newData);
+        const updatedAdData = { ...editedAdData, [name]: value };
+        const mainUpdatedAdData = { ...upData, [name]: value };
+        console.log(editedAdData)
+        console.log(updatedAdData)
+        // console.log(mainUpdatedAdData)
+        // setEditedAdData(updatedAdData);
+        setUpData(prevData => ({
+            ...prevData,
+            [name]: value
+        }))
     };
 
     const saveEditedAdData = async () => {
         try {
-            const requestParams = { ad_id: editedAdData._id, ...editedAdData } as UpdateAdInfoRequestParams;
+            console.log(upData)
+            const requestParams = { ad_id: editedAdData._id, ...upData } as UpdateAdInfoRequestParams;
             const response = await updateAdData(requestParams).unwrap(); // Replace with your API call
             setAdDataAfterSavedEdit(prevAdsData => {
                 const updatedIndex = prevAdsData.findIndex(ad => ad._id === adData._id);
@@ -80,14 +89,14 @@ const AdModalForEdit = (props: UpdateAdsDataProps) => {
             <input
                 type="text"
                 name="name"
-                value={editedAdData.name}
+                value={adData.name}
                 onChange={handleInputChange}
             />
             <label htmlFor="url">URL</label>
             <input
                 type="text"
                 name="url"
-                value={editedAdData.url}
+                value={adData.url}
                 onChange={handleInputChange}
             />
             {/* Add more input fields for other properties */}
