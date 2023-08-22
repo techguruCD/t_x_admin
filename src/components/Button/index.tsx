@@ -1,4 +1,11 @@
-import React from 'react'
+import React, { DetailedHTMLProps, HTMLAttributes, useState } from 'react'
+import {
+    faUsers, faBullhorn, faSignOutAlt,
+    IconDefinition
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon, IconProp } from "@fortawesome/react-fontawesome";
+import { library } from "@fortawesome/fontawesome-svg-core";
+
 import './button.scss'
 
 interface ButtonProps {
@@ -25,4 +32,42 @@ const Button = (props: ButtonProps) => {
     )
 }
 
+interface CustomButtonProps {
+    icon: IconDefinition,
+    text: string,
+    style: Record<string, string>,
+    onClick?: (e: DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>) => void
+}
+
+const CustomButton = ({ icon, text, style, onClick }: CustomButtonProps) => {
+    const [customButtonItemHover, setSideBarItemHover] = useState(false)
+
+    function toggleHoverEffect(light: boolean) {
+        setSideBarItemHover(light)
+    }
+    return (
+        <div
+            className='custombutton__content__item'
+            style={style}
+            onMouseEnter={() => toggleHoverEffect(true)}
+            onMouseLeave={() => toggleHoverEffect(false)}
+            onClick={onClick}
+        >
+            <FontAwesomeIcon
+                className='icon'
+                icon={icon}
+                style={{
+                    color: customButtonItemHover ? 'white' : 'black',
+                }}
+            />
+            <p style={{ color: customButtonItemHover ? 'white' : 'black' }}>
+                {text} </p>
+        </div >
+    )
+}
+
+export {
+    Button,
+    CustomButton
+}
 export default Button

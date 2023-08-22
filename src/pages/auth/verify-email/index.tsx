@@ -110,8 +110,6 @@ const VerifyEmail = () => {
             return toast.error("Please login to continue");
         }
 
-        console.log(user);
-
         await resendVerificationEmail({ email: user.email }).unwrap();
     };
 

@@ -36,8 +36,13 @@ html,
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    position: relative
 }
 
+body, html {
+    height: 100vh;
+    width: 100vw;
+}
 body {
     font-family: "Open Sans", sans-serif;
     font-size: 16px;

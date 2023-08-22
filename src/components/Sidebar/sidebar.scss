@@ -1,0 +1,120 @@
+.sidebar {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: left;
+    width: 300px;
+    height: 100%;
+    // padding: 10px;
+    padding: 20px 10px;
+    border-radius: 10px;
+
+    .sidebar__header {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: left;
+        margin-bottom: 30px;
+        border-bottom: 1px solid var(--gray-203);
+        padding: 15px;
+
+        img {
+            width: 48px;
+            height: 48px;
+            margin-right: 10px;
+        }
+
+        h1 {
+            font-size: 30px;
+            font-weight: 500;
+            line-height: 17px;
+            color: var(--primary);
+        }
+    }
+
+    .sidebar__content {
+        display: flex;
+        flex-direction: column;
+        align-items: left;
+        justify-content: left;
+        margin-top: 20px;
+        width: 100%;
+        height: 100%;
+
+        .sidebar__content__item {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: left;
+            margin: 20px 5px;
+            padding: 10px 15px;
+            border-radius: 40px;
+            transition: background-color 0.3s;
+
+            &:hover {
+                cursor: pointer;
+                background-color: var(--primary);
+                transition: background-color 0.3s;
+            }
+
+            .icon {
+                width: 24px;
+                height: 24px;
+                margin-right: 15px;
+                transition: background-color 0.3s;
+            }
+
+            p {
+                font-size: 22px;
+                font-weight: 500;
+                line-height: 17px;
+                color: var(--gray);
+
+                &:hover {
+                    color: var(--white);
+                    transition: color 0.3s;
+                }
+            }
+        }
+
+        .logout {
+            border-top: 1px solid var(--gray-203);
+            display: none
+        }
+    }
+
+    .sidebar__footer {
+        margin-top: auto;
+    }
+
+    .sidebar_admin_info {
+        margin-top: 40px;
+        padding: 20px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        img {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 13px;
+            font-weight: 500;
+            line-height: 17px;
+            color: var(--gray);
+        }
+
+    }
+    
+  
+}

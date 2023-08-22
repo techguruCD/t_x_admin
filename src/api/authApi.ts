@@ -1,4 +1,5 @@
 import { API_BASEURL } from '../constants';
+import { EndpointDefinitions } from '@reduxjs/toolkit/dist/query/react'
 import {
     UserLoginData,
     LoginResponse,
@@ -49,7 +50,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
         }),
         retryVerifyEmail: builder.mutation<RetryVerifyEmailResponse, RetryVerifyEmailRequestParams>({
             query: (credentials: RetryVerifyEmailRequestParams) => ({
-                url: AUTH_URL + `/verificationemail?email=${credentials.email.tolowerCase()}`,
+                url: AUTH_URL + `/verificationemail?email=${credentials.email.toLowerCase()}`,
                 method: 'GET'
             })
         }),
@@ -71,6 +72,12 @@ export const authApiSlice = apiSlice.injectEndpoints({
                 headers: { Authorization: `Bearer ${credentials.access_token}` }
             })
         }),
+        refreshToken: builder.query<LoginResponse, null>({
+            query: () => ({
+                url: AUTH_URL + '/authtoken',
+                method: 'GET',
+            })
+        })
     })
 })
 
@@ -81,5 +88,6 @@ export const {
     useVerifyEmailMutation,
     useRetryVerifyEmailMutation,
     useForgotPasswordMutation,
-    useResetPasswordMutation
+    useResetPasswordMutation,
+    useRefreshTokenQuery,
 } = authApiSlice;
