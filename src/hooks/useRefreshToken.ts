@@ -6,7 +6,7 @@ import { setAuth } from '../slices/authSlice'
 
 function useRefreshToken() {
     const dispatch = useDispatch()
-    const { isLoggedIn } = useSelector((state: RootState) => state.auth)
+    const { isLoggedIn, accessToken } = useSelector((state: RootState) => state.auth)
     const { data, isSuccess, isError, isLoading } = useRefreshTokenQuery(null)
 
     return useEffect(() => {
@@ -22,7 +22,7 @@ function useRefreshToken() {
                 accessToken: access_token
             }))
         }
-    }, [data, isLoading, isSuccess, isError, isLoggedIn, dispatch])
+    }, [data, accessToken, isLoading, isSuccess, isError, isLoggedIn, dispatch])
 }
 
 export default useRefreshToken

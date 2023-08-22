@@ -1,15 +1,13 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import './sidebar.scss'
 import {
-    faUsers, faBullhorn, faSignOutAlt,
+    faUsers, faBullhorn,
     IconDefinition
 } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon, IconProp } from "@fortawesome/react-fontawesome";
-import { library } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSelector, useDispatch } from 'react-redux'
 import { AppDispatch, RootState } from '../../app/store';
 import { SetPanePayload, setSelectedPane } from '../../slices/dashboardSlice';
-import { Navigate, useNavigate} from 'react-router-dom';
 
 interface SideBarItemProps {
     icon: IconDefinition;
@@ -51,10 +49,9 @@ const SideBarItem = ({ icon, text }: SideBarItemProps) => {
 }
 
 const Sidebar = () => {
-    const { user, isLoggedIn } = useSelector((state: RootState) => state.auth)
-    
-    // if (!isLoggedIn || !user) return <Navigate to='/login' />
+    const { user } = useSelector((state: RootState) => state.auth)
 
+    if (!user) return <></>
     return (
         <div className='sidebar dashboard_content_modal'>
             <div className='sidebar__header'>
@@ -66,7 +63,6 @@ const Sidebar = () => {
                 <SideBarItem icon={faUsers} text='Users' />
                 <SideBarItem icon={faBullhorn} text='Ads' />
             </div>
-
 
             <div className='sidebar__footer'>
                 <div className='sidebar_admin_info'>

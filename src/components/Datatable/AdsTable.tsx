@@ -5,13 +5,14 @@ import './table.scss'
 import { useGetAdsQuery } from '../../api/adApi'
 import { toast } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrash, faEye } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faEye } from '@fortawesome/free-solid-svg-icons';
+import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query'
 import { useUpdateAdMutation } from '../../api/adApi'
 import { UpdateAdInfoRequestParams } from '../../api/types/adApi.types'
 import { SerializedError } from '@reduxjs/toolkit'
 
 function formatDate(dateString: string) {
-    const options = { year: 'numeric', month: 'long', day: 'numeric' } as any;
+    const options = { year: 'numeric', month: 'long', day: 'numeric' } as const;
     const formattedDate = new Date(dateString).toLocaleDateString('en-US', options);
     return formattedDate;
 }
@@ -24,6 +25,8 @@ interface UpdateAdsDataProps {
     onClose: () => void,
     setAdDataAfterSavedEdit: React.Dispatch<React.SetStateAction<AdInfoFromApi[]>>
 }
+
+
 const AdModalForView = (props: ViewAdsDataProps) => {
     const { adData: adInfo, onClose } = props
     const [adData, setAdData] = useState<AdInfoFromApi>(adInfo)
@@ -74,7 +77,8 @@ const AdModalForEdit = (props: UpdateAdsDataProps) => {
             setIsEditMode(false);
             onClose();
         } catch (error) {
-            handleError(error);
+            type ErrorType = FetchBaseQueryError | SerializedError;
+            handleError(error as ErrorType);
         }
     };
 
@@ -128,17 +132,6 @@ const AdModalForEdit = (props: UpdateAdsDataProps) => {
 
 interface AdTableProps {
     setAdCount: React.Dispatch<React.SetStateAction<number>>
-}
-
-function handleError(error: FetchBaseQueryError | SerializedError) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    if ((error as any).error) toast.error((error as any).error)
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const apiError = error as any
-    const badRequestError = apiError.status && (apiError.status < 500) && apiError.data?.message
-    if (badRequestError) toast.error(apiError.data?.message)
-    else toast.error('An error occured')
 }
 
 export const AdsTable = ({ setAdCount }: AdTableProps) => {

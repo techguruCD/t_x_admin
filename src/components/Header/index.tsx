@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import './header.scss'
 import {
-    faUsers, faBullhorn, faSignOutAlt,
+     faSignOutAlt,
     IconDefinition
 } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon, IconProp } from "@fortawesome/react-fontawesome";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { CustomButton } from '../Button';
 import { useDispatch } from 'react-redux';
@@ -44,9 +45,11 @@ const SideBarItem = ({ icon, text }: SideBarItemProps) => {
 
 const Header = () => {
     const dispatch = useDispatch()
-    
+    const navigate = useNavigate()
+
     const onClick = () => {
         dispatch(logOut())
+        navigate('/')
     }
 
     return (
@@ -57,7 +60,6 @@ const Header = () => {
                 <CustomButton
                     icon={faSignOutAlt}
                     text='Logout'
-                    style={{}}
                     onClick={onClick}
                 />
             </div>
