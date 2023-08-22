@@ -35,9 +35,25 @@ interface GetAdsResponse extends SuccessResponse {
     }
 }
 
+interface UpdateAdInfoResponse extends SuccessResponse {
+    data: {
+        ad: AdInfoFromApi
+    }
+}
+interface UpdateAdInfoRequestParams {
+    ad_id: string;
+    name?: string;
+    url?: string;
+    status?: string;
+    expiry?: string;
+    image?: string;
+}
+
 export type {
     AdInfoFromApi,
     GetAdInfoRequestParams,
     GetAdInfoResponse,
-    GetAdsResponse
+    GetAdsResponse,
+    UpdateAdInfoResponse,
+    UpdateAdInfoRequestParams,
 }

@@ -4,6 +4,8 @@ import {
     GetAdInfoResponse,
     GetAdInfoRequestParams,
     GetAdsResponse,
+    UpdateAdInfoResponse,
+    UpdateAdInfoRequestParams,
 } from './types/adApi.types'
 
 const USER_URL = API_BASEURL + '/ads'
@@ -34,8 +36,15 @@ export const adApiSlice = apiSlice.injectEndpoints({
                 method: 'GET'
             })
         }),
+        updateAd: builder.mutation<UpdateAdInfoResponse, UpdateAdInfoRequestParams>({
+            query: (credentials: UpdateAdInfoRequestParams) => ({
+                url: USER_URL + '/update',
+                method: 'PATCH',
+                body: credentials
+            })
+        })
     })
 })
 
-export const { useGetAdInfoQuery, useGetAdsQuery } = adApiSlice
+export const { useGetAdInfoQuery, useGetAdsQuery, useUpdateAdMutation } = adApiSlice
 
