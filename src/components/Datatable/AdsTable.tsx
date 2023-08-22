@@ -1,9 +1,42 @@
-import { useState, useMemo, useEffect } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 import { useTable, usePagination, Column } from 'react-table'
 import { ADS_COLUMNS, AdInfoFromApi } from './columns'
 import './table.scss'
 import { useGetAdsQuery } from '../../api/adApi'
 import { toast } from 'react-toastify';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit, faTrash, faEye } from '@fortawesome/free-solid-svg-icons';
+import Modal from 'react-modal';
+
+function formatDate(dateString: string) {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' } as any;
+    const formattedDate = new Date(dateString).toLocaleDateString('en-US', options);
+    return formattedDate;
+}
+interface AdsModalProps {
+    adData: AdInfoFromApi,
+    onClose: () => void
+}
+const AdModal = (props: AdsModalProps) => {
+    const { adData: adInfo, onClose } = props
+    const [adData, setAdData] = useState<AdInfoFromApi>(adInfo)
+
+    return (
+        <div className='ad-modal'>
+            <h2>Ad Details</h2>
+            {adData && (<>
+                <p><span>Name: </span> {adData.name}</p>
+                <p><span>URL: </span> <a href={adData.url}>{adData.url}</a></p>
+                <img src={adData.image} alt={adData.name} />
+                <p><span>Created: </span> {formatDate(adData.createdAt)}</p>
+                <p><span>Expiry: </span> {formatDate(adData.expiry)}</p>
+                <p><span>Status: </span> {adData.status}</p>
+            </>
+            )}
+            <button onClick={onClose}>Close</button>
+        </div>
+    );
+}
 
 interface AdTableProps {
     setAdCount: React.Dispatch<React.SetStateAction<number>>
@@ -11,6 +44,8 @@ interface AdTableProps {
 export const AdsTable = ({ setAdCount }: AdTableProps) => {
     const [adsData, setAdsData] = useState<AdInfoFromApi[]>([])
     const { data: apiData, isLoading, error } = useGetAdsQuery([])
+    const [selectedAdData, setSelectedAdData] = useState<AdInfoFromApi>()
+    const [isAdModalOpen, setIsAdModalOpen] = useState(false)
 
     const columns = useMemo(() => {
         return ADS_COLUMNS.map(header => ({
@@ -60,6 +95,14 @@ export const AdsTable = ({ setAdCount }: AdTableProps) => {
         canNextPage, canPreviousPage, pageOptions, setPageSize, pageSize } = tableInstance as any
     const { pageIndex } = state
 
+    const viewAdDetails = (adData: AdInfoFromApi) => {
+        console.log(adData)
+        setSelectedAdData(adData)
+        setIsAdModalOpen(true)
+    }
+    const closeModal = () => {
+        setIsAdModalOpen(false)
+    }
 
     useEffect(() => {
         const handleResize = () => {
@@ -84,6 +127,8 @@ export const AdsTable = ({ setAdCount }: AdTableProps) => {
 
     return (
         <div>
+            {(isAdModalOpen && selectedAdData) && <AdModal onClose={closeModal} adData={selectedAdData} />}
+
             {tableData.length > 1 && (
                 <div>
                     <div className='table_area'>
@@ -104,6 +149,7 @@ export const AdsTable = ({ setAdCount }: AdTableProps) => {
                                 <tbody {...getTableBodyProps()}>
                                     {page.map(row => {
                                         prepareRow(row)
+                                        const ad = row.original
                                         return (
                                             <tr {...row.getRowProps()}>
                                                 {row.cells.map(cell => {
@@ -113,6 +159,11 @@ export const AdsTable = ({ setAdCount }: AdTableProps) => {
                                                         </td>
                                                     )
                                                 })}
+                                                <td className='button-action-area'>
+                                                    <button onClick={() => viewAdDetails(ad)} className='btn-action-row'><FontAwesomeIcon icon={faEye} /></button>
+                                                    <button onClick={() => viewAdDetails(ad)} className='btn-action-row'><FontAwesomeIcon icon={faEdit} /></button>
+                                                    <button onClick={() => viewAdDetails(ad)} className='btn-action-row'><FontAwesomeIcon icon={faTrash} /></button>
+                                                </td>
                                             </tr>
                                         )
                                     })}
@@ -146,9 +197,10 @@ export const AdsTable = ({ setAdCount }: AdTableProps) => {
                     </div>
                 </div>
             )}
+
+
             {isLoading && <div>Loading...</div>}
             {!isLoading && adsData.length === 0 && <div>No ads found</div>}
-
         </div>
     )
 }
