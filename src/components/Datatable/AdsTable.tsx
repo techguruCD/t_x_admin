@@ -2,11 +2,10 @@ import React, { useState, useMemo, useEffect } from 'react'
 import { useTable, usePagination, Column } from 'react-table'
 import { ADS_COLUMNS, AdInfoFromApi } from './columns'
 import './table.scss'
-import { adApiSlice, useGetAdsQuery } from '../../api/adApi'
+import { useGetAdsQuery } from '../../api/adApi'
 import { toast } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash, faEye } from '@fortawesome/free-solid-svg-icons';
-import Modal from 'react-modal';
 import { useUpdateAdMutation } from '../../api/adApi'
 import { UpdateAdInfoRequestParams } from '../../api/types/adApi.types'
 import { SerializedError } from '@reduxjs/toolkit'
@@ -23,7 +22,6 @@ interface ViewAdsDataProps {
 interface UpdateAdsDataProps {
     adData: AdInfoFromApi,
     onClose: () => void,
-    onSaveEditedData: () => void,
     setAdDataAfterSavedEdit: React.Dispatch<React.SetStateAction<AdInfoFromApi[]>>
 }
 const AdModalForView = (props: ViewAdsDataProps) => {
@@ -48,7 +46,7 @@ const AdModalForView = (props: ViewAdsDataProps) => {
 }
 const AdModalForEdit = (props: UpdateAdsDataProps) => {
     const { adData, onClose, setAdDataAfterSavedEdit } = props;
-    const [editedAdData, setEditedAdData] = useState<AdInfoFromApi>({ name: adData.name, url: adData.url, _id: adData._id});
+    const [editedAdData, setEditedAdData] = useState<AdInfoFromApi>({ name: adData.name, url: adData.url, _id: adData._id });
     const [isEditMode, setIsEditMode] = useState(false);
     const [updateFunc] = useUpdateAdMutation()
 
@@ -271,16 +269,26 @@ export const AdsTable = ({ setAdCount }: AdTableProps) => {
                                         return (
                                             <tr {...row.getRowProps()}>
                                                 {row.cells.map(cell => {
+                                                    const cellProps = cell.getCellProps()
+                                                    cellProps.className = `${cellProps.className} word-wrap`;
+                                                    if (cell.column.id === 'expiry') {
+                                                        // Format the expiry date before rendering
+                                                        return (
+                                                            <td {...cell.getCellProps()} className='table-column'>
+                                                                {formatDate(cell.value)}
+                                                            </td>
+                                                        );
+                                                    }
                                                     return (
-                                                        <td {...cell.getCellProps()}>
+                                                        <td {...cell.getCellProps()} className='table-column'>
                                                             {cell.render('Cell')}
                                                         </td>
-                                                    )
+                                                    );
                                                 })}
                                                 <td className='button-action-area'>
                                                     <button onClick={() => viewAdDetails(ad)} className='btn-action-row'><FontAwesomeIcon icon={faEye} /></button>
                                                     <button onClick={() => editAdDetails(ad)} className='btn-action-row'><FontAwesomeIcon icon={faEdit} /></button>
-                                                    <button onClick={() => viewAdDetails(ad)} className='btn-action-row'><FontAwesomeIcon icon={faTrash} /></button>
+                                                    {/* <button onClick={() => viewAdDetails(ad)} className='btn-action-row'><FontAwesomeIcon icon={faTrash} /></button> */}
                                                 </td>
                                             </tr>
                                         )

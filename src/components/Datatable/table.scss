@@ -35,6 +35,11 @@ tfoot td {
     color: white;
 }
 
+.table-column {
+    // display: none;
+    max-width: 100px;
+    white-space: normal
+}
 .page_control {
     height: 50px;
     width: 100%;
