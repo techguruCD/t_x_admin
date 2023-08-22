@@ -17,7 +17,7 @@ interface AdsModalProps {
     adData: AdInfoFromApi,
     onClose: () => void
 }
-const AdModal = (props: AdsModalProps) => {
+const AdModalForView = (props: AdsModalProps) => {
     const { adData: adInfo, onClose } = props
     const [adData, setAdData] = useState<AdInfoFromApi>(adInfo)
 
@@ -37,6 +37,64 @@ const AdModal = (props: AdsModalProps) => {
         </div>
     );
 }
+const AdModalForEdit = (props: AdsModalProps) => {
+    const { adData, onClose } = props
+    const [editedData, setEditedData] = useState<AdInfoFromApi>(adData);
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setEditedData(prevData => ({
+            ...prevData,
+            [name]: value
+        }));
+    };
+
+    const handleSave = () => {
+        // onUpdate(editedData);
+        console.log('editing')
+        onClose();
+    };
+
+    return (
+        <div className='ad-modal edit-ad-modal'>
+            <h2>Edit Ad</h2>
+            <label htmlFor="name">Name</label>
+            <input
+                type="text"
+                name="name"
+                value={editedData.name}
+                onChange={handleInputChange}
+            />
+            <label htmlFor="url">URL</label>
+            <input
+                type="text"
+                name="url"
+                value={editedData.url}
+                onChange={handleInputChange}
+            />
+            {/* Add more input fields for other properties */}
+            <div className="button-action-area-for-edit-modal">
+                <button className="save-button" onClick={handleSave}>Save</button>
+                <button className="close-button" onClick={onClose}>Cancel</button>
+            </div>
+        </div>
+    );
+    // return (
+    //     // <div className='ad-modal'>
+    //     //     <h2>Ad Details</h2>
+    //     //     {adData && (<>
+    //     //         <p><span>Name: </span> {adData.name}</p>
+    //     //         <p><span>URL: </span> <a href={adData.url}>{adData.url}</a></p>
+    //     //         <img src={adData.image} alt={adData.name} />
+    //     //         <p><span>Created: </span> {formatDate(adData.createdAt)}</p>
+    //     //         <p><span>Expiry: </span> {formatDate(adData.expiry)}</p>
+    //     //         <p><span>Status: </span> {adData.status}</p>
+    //     //     </>
+    //     //     )}
+    //     //     <button onClick={onClose}>Close</button>
+    //     // </div>
+    // );
+}
 
 interface AdTableProps {
     setAdCount: React.Dispatch<React.SetStateAction<number>>
@@ -45,7 +103,8 @@ export const AdsTable = ({ setAdCount }: AdTableProps) => {
     const [adsData, setAdsData] = useState<AdInfoFromApi[]>([])
     const { data: apiData, isLoading, error } = useGetAdsQuery([])
     const [selectedAdData, setSelectedAdData] = useState<AdInfoFromApi>()
-    const [isAdModalOpen, setIsAdModalOpen] = useState(false)
+    const [isAdModalForViewOpen, setIsAdModalForViewOpen] = useState(false)
+    const [isAdModalForUpdateOpen, setIsAdModalForUpdateOpen] = useState(false)
 
     const columns = useMemo(() => {
         return ADS_COLUMNS.map(header => ({
@@ -98,10 +157,16 @@ export const AdsTable = ({ setAdCount }: AdTableProps) => {
     const viewAdDetails = (adData: AdInfoFromApi) => {
         console.log(adData)
         setSelectedAdData(adData)
-        setIsAdModalOpen(true)
+        setIsAdModalForViewOpen(true)
     }
     const closeModal = () => {
-        setIsAdModalOpen(false)
+        setIsAdModalForViewOpen(false)
+    }
+
+    const updateAdDetails = (adData: AdInfoFromApi) => {
+        if (isAdModalForViewOpen) setIsAdModalForViewOpen(false)
+        setSelectedAdData(adData)
+        setIsAdModalForUpdateOpen(true)
     }
 
     useEffect(() => {
@@ -127,7 +192,8 @@ export const AdsTable = ({ setAdCount }: AdTableProps) => {
 
     return (
         <div>
-            {(isAdModalOpen && selectedAdData) && <AdModal onClose={closeModal} adData={selectedAdData} />}
+            {(isAdModalForViewOpen && selectedAdData) && <AdModalForView onClose={closeModal} adData={selectedAdData} />}
+            {(isAdModalForUpdateOpen && selectedAdData) && <AdModalForEdit onClose={closeModal} adData={selectedAdData} />}
 
             {tableData.length > 1 && (
                 <div>
@@ -161,7 +227,7 @@ export const AdsTable = ({ setAdCount }: AdTableProps) => {
                                                 })}
                                                 <td className='button-action-area'>
                                                     <button onClick={() => viewAdDetails(ad)} className='btn-action-row'><FontAwesomeIcon icon={faEye} /></button>
-                                                    <button onClick={() => viewAdDetails(ad)} className='btn-action-row'><FontAwesomeIcon icon={faEdit} /></button>
+                                                    <button onClick={() => updateAdDetails(ad)} className='btn-action-row'><FontAwesomeIcon icon={faEdit} /></button>
                                                     <button onClick={() => viewAdDetails(ad)} className='btn-action-row'><FontAwesomeIcon icon={faTrash} /></button>
                                                 </td>
                                             </tr>

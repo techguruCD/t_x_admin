@@ -88,6 +88,7 @@ tfoot td {
     height: 24px;
     width: 24px // display: none
 }
+
 .button-action-area {
     width: auto;
     display: flex;
@@ -143,6 +144,7 @@ tfoot td {
         font-size: bigger;
         font-weight: bold;
     }
+
     img {
         max-width: 100%;
         height: auto;
@@ -162,7 +164,7 @@ tfoot td {
         margin-top: 30px;
         transition: background-color 0.3s ease;
 
-        
+
 
         &:hover {
             background-color: #2980b9;
@@ -172,6 +174,53 @@ tfoot td {
     @media (max-width: 600px) {
         width: 90%;
         max-width: 100%;
-        max-height: 250px ;
+        max-height: 250px;
+    }
+}
+
+.edit-ad-modal {
+    display: flex;
+    flex-direction: column;
+
+    .button-action-area-for-edit-modal {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        justify-content: space-between;
+        align-items: space-between;
+
+        button {
+            min-width: 100px;
+        }
+        .save-button {
+            margin-right: auto;
+            background-color: #023047;
+            &:hover {
+                background-color: #219ebc;
+            }
+        }
+        .close-button {
+            margin-left: auto;
+            background-color: orange;
+
+            &:hover {
+                background-color: orangered;
+            }
+        }
+
+    }
+    input {
+        margin: 10px 0;
+        margin-bottom: 20px;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        font-size: 1.2rem;
+        width: 100%;
+    }
+
+    label {
+        width: 100%;
+        text-align: left;
     }
 }
