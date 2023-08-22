@@ -1,6 +1,5 @@
 import { API_BASEURL } from "../constants";
 import { apiSlice } from './api'
-import { EndpointDefinitions } from '@reduxjs/toolkit/dist/query/react'
 import {
     GetUserInfoResponse,
     GetUserInfoRequestParams,
@@ -34,7 +33,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
                 }
             }
         }),
-        getUsers: builder.query<GetUsersResponse, any>({
+        getUsers: builder.query<GetUsersResponse, []>({
             query: () => ({
                 url: USER_URL,
                 method: 'GET'

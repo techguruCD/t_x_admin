@@ -35,6 +35,11 @@ tfoot td {
     color: white;
 }
 
+.table-column {
+    // display: none;
+    max-width: 100px;
+    white-space: normal
+}
 .page_control {
     height: 50px;
     width: 100%;
@@ -80,4 +85,147 @@ tfoot td {
 .table_area {
     overflow-y: scroll;
     overflow-x: scroll;
+}
+
+.btn-action-row {
+    border: 0;
+    margin: 5px;
+    height: 24px;
+    width: 24px // display: none
+}
+
+.button-action-area {
+    width: auto;
+    display: flex;
+    // flex-direction: row;
+    max-width: 100px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin-right: 0
+}
+
+.ad-modal {
+    position: absolute;
+    width: 80%;
+    max-width: 400px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    text-align: center;
+    z-index: 1;
+
+    h2 {
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+
+        @media (max-width: 600px) {
+            width: 100%;
+            margin-botto: 10px;
+            font-size: 1.2rem
+        }
+    }
+
+    p {
+        font-size: 1.2rem;
+        margin: 10px 0;
+    }
+
+    a {
+        color: #3498db;
+        text-decoration: none;
+        transition: color 0.3s ease;
+
+        &:hover {
+            color: #2980b9;
+        }
+    }
+
+    span {
+        font-size: bigger;
+        font-weight: bold;
+    }
+
+    img {
+        max-width: 100%;
+        height: auto;
+        margin-top: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    button {
+        background-color: #3498db;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 12px 25px;
+        font-size: 1.2rem;
+        cursor: pointer;
+        margin-top: 30px;
+        transition: background-color 0.3s ease;
+
+
+
+        &:hover {
+            background-color: #2980b9;
+        }
+    }
+
+    @media (max-width: 600px) {
+        width: 90%;
+        max-width: 100%;
+        max-height: 250px;
+    }
+}
+
+.edit-ad-modal {
+    display: flex;
+    flex-direction: column;
+
+    .button-action-area-for-edit-modal {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        justify-content: space-between;
+        align-items: space-between;
+
+        button {
+            min-width: 100px;
+        }
+        .save-button {
+            margin-right: auto;
+            background-color: #023047;
+            &:hover {
+                background-color: #219ebc;
+            }
+        }
+        .close-button {
+            margin-left: auto;
+            background-color: orange;
+
+            &:hover {
+                background-color: orangered;
+            }
+        }
+
+    }
+    input {
+        margin: 10px 0;
+        margin-bottom: 20px;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        font-size: 1.2rem;
+        width: 100%;
+    }
+
+    label {
+        width: 100%;
+        text-align: left;
+    }
 }

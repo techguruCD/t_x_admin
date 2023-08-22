@@ -1,9 +1,12 @@
-import { useState, useMemo, useEffect, useCallback } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { useTable, usePagination, Column } from 'react-table'
 import { USER_COLUMNS, UserInfoFromApi } from './columns'
 import './table.scss'
 import { useGetUsersQuery } from '../../api/userApi'
-import { toast } from 'react-toastify';
+import { handleError } from '../../utils/errorHandler'
+import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query'
+import { SerializedError } from '@reduxjs/toolkit'
+
 
 interface UserTableProps {
     setUserCount: React.Dispatch<React.SetStateAction<number>>
@@ -26,16 +29,7 @@ export const UserTable = ({ setUserCount }: UserTableProps) => {
         }
 
         if (error) {
-            if (error) {
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                if ((error as any).error) toast.error((error as any).error)
-
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                const apiError = error as any
-                const badRequestError = apiError.status && (apiError.status < 500) && apiError.data?.message
-                if (badRequestError) toast.error(apiError.data?.message)
-                else toast.error('An error occured')
-            }
+            handleError(error as FetchBaseQueryError | SerializedError)
         }
         return
     }, [apiData, error])
@@ -57,7 +51,8 @@ export const UserTable = ({ setUserCount }: UserTableProps) => {
         footerGroups,
     } = tableInstance
     const { page, state, nextPage, previousPage,
-        canNextPage, canPreviousPage, pageOptions, setPageSize, pageSize } = tableInstance as any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        canNextPage, canPreviousPage, pageOptions, setPageSize } = tableInstance as any
     const { pageIndex } = state
 
 
@@ -65,11 +60,11 @@ export const UserTable = ({ setUserCount }: UserTableProps) => {
         const handleResize = () => {
             const screenHeight = window.innerHeight;
             if (screenHeight >= 1200) {
-                setPageSize(Math.floor(screenHeight / 80)); 
+                setPageSize(Math.floor(screenHeight / 80));
             } else if (screenHeight > 992) {
-                setPageSize(Math.floor(screenHeight / 100)); 
+                setPageSize(Math.floor(screenHeight / 100));
             } else {
-                setPageSize(5); 
+                setPageSize(5);
             }
         };
 

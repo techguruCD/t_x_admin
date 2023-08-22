@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from 'react'
 import './dashboardpane.scss'
 import { UserTable } from '../Datatable/UserTable'
+import { AdsTable } from '../Datatable/AdsTable'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../app/store'
 
+
 const AdsPane = () => {
+    const [adCount, setAdCount] = useState(0)
+
     return (
         <div className='dashboardpane'>
             <section className='__header'>
                 <h1> Ads </h1>
-                <h2> 200 total </h2>
+                <h2> {adCount} total </h2>
             </section>
-            <UserTable />
+            <AdsTable setAdCount={setAdCount} />
         </div>
     )
 }
@@ -25,7 +29,7 @@ const UsersPane = () => {
                 <h1> Users </h1>
                 <h2> {userCount} total </h2>
             </section>
-            <UserTable setUserCount={setUserCount}/>
+            <UserTable setUserCount={setUserCount} />
         </div>
     )
 }

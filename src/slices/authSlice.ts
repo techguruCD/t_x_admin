@@ -47,6 +47,7 @@ const initialState: AuthState = {
     isLoading: false,
     isSuccess: false,
     emailVerificationToken: undefined,
+    passwordResetToken: undefined,
     accessToken: undefined,
     refreshToken: undefined,
     isLoggedIn: false
@@ -93,7 +94,6 @@ export const authSlice = createSlice({
             state.isLoggedIn = true
         },
         logOut: (state) => {
-            console.log('clearing state logour')
             state.user = null
             state.accessToken = ''
             state.refreshToken = ''
