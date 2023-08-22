@@ -80,6 +80,7 @@ const AdModalForEdit = (props: UpdateAdsDataProps) => {
                 return updatedAds;
             });
             setIsEditMode(false);
+            toast.success('Ad updated successfully')
             onClose();
         } catch (error) {
             type ErrorType = FetchBaseQueryError | SerializedError;

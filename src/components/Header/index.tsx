@@ -1,19 +1,28 @@
 import { useNavigate } from 'react-router-dom'
 import './header.scss'
 import {
-     faSignOutAlt,
+    faSignOutAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import { CustomButton } from '../Button';
 import { useDispatch } from 'react-redux';
 import { logOut } from '../../slices/authSlice';
+import { useLogOutMutation } from '../../api/authApi';
+import { handleError } from '../../utils/errorHandler';
 
 const Header = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const [logout] = useLogOutMutation()
 
-    const onClick = () => {
-        dispatch(logOut())
-        navigate('/')
+    const onClick = async () => {
+        try {
+            await logout([]).unwrap()
+            dispatch(logOut())
+            navigate('/login')
+        } catch (error) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            handleError(error as any)
+        }
     }
 
     return (
