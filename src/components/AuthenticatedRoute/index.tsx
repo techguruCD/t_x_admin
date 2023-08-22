@@ -14,14 +14,14 @@ const AuthenticatedRoutes = () => {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        console.log({
-            data,
-            isSuccess,
-            isError,
-            isLoading
-        })
+        // console.log({
+        //     data,
+        //     isSuccess,
+        //     isError,
+        //     isLoading
+        // })
         if (data) {
-            console.log('dispatching')
+            // console.log('dispatching')
             const { access_token } = data.data
             dispatch(setAuth({
                 accessToken: access_token

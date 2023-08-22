@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo, useEffect, useCallback } from 'react'
 import { useTable, usePagination, Column } from 'react-table'
 import { USER_COLUMNS, UserInfoFromApi } from './columns'
 import './table.scss'
@@ -40,6 +40,7 @@ export const UserTable = ({ setUserCount }: UserTableProps) => {
         return
     }, [apiData, error])
 
+
     useEffect(() => {
         setUserCount(usersData.length)
     }, [usersData, setUserCount])
@@ -56,8 +57,30 @@ export const UserTable = ({ setUserCount }: UserTableProps) => {
         footerGroups,
     } = tableInstance
     const { page, state, nextPage, previousPage,
-        canNextPage, canPreviousPage, pageOptions, setPageSize } = tableInstance as any
+        canNextPage, canPreviousPage, pageOptions, setPageSize, pageSize } = tableInstance as any
     const { pageIndex } = state
+
+
+    useEffect(() => {
+        const handleResize = () => {
+            const screenHeight = window.innerHeight;
+            if (screenHeight >= 1200) {
+                setPageSize(Math.floor(screenHeight / 80)); 
+            } else if (screenHeight > 992) {
+                setPageSize(Math.floor(screenHeight / 100)); 
+            } else {
+                setPageSize(5); 
+            }
+        };
+
+        window.addEventListener('resize', handleResize);
+
+        handleResize();
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
 
     return (
         <div>
@@ -115,23 +138,14 @@ export const UserTable = ({ setUserCount }: UserTableProps) => {
                                 </strong>{' '}
 
                             </span>
-                            {/* <select value={pageSize} onChange={e => setPageSize(Number(e.target.value))}>
-                    {
-                        [10, 25, 50].map(pageSize => (
-                            <option key={pageSize} value={pageSize}>
-                                Show {pageSize}
-                            </option>
-                        ))
+                            {/* <select value={pageSize} onChange={e => setPageSize(Number(e.target.value))}> </select> */}
 
-                    }
-                </select> */}
                             <button onClick={() => previousPage()} disabled={!canPreviousPage}>Previous</button>
                             <button onClick={() => nextPage()} disabled={!canNextPage}>Next</button>
                         </div>
                     </div>
                 </div>
             )}
-            {() => setPageSize(5)}
             {isLoading && <div>Loading...</div>}
             {!isLoading && usersData.length === 0 && <div>No users found</div>}
 
