@@ -4,7 +4,6 @@ table {
     width: 100%;
     border-radius: 20px;
     height: 100px;
-    overflow-y: scroll;
     overflow-x: scroll;
 }
 
@@ -18,7 +17,6 @@ table th {
     padding: 15px;
     font-size: 14px;
 }
-
 
 table tr:nth-child(even) {
     background-color: #f2f2f2;

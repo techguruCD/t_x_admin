@@ -39,6 +39,10 @@ html,
     position: relative
 }
 
+body, html {
+    height: 100vh;
+    width: 100vw;
+}
 body {
     font-family: "Open Sans", sans-serif;
     font-size: 16px;

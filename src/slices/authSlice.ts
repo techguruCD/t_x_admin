@@ -90,7 +90,7 @@ export const authSlice = createSlice({
         setAuth: (state, action: PayloadAction<{ accessToken: string, refreshToken?: string}>) => {
             state.accessToken = action.payload.accessToken
             state.refreshToken = state.refreshToken ? state.refreshToken : action.payload.refreshToken
-            state.isLoggedIn = action.payload.accessToken ? true : false
+            state.isLoggedIn = true
         },
         logOut: (state) => {
             console.log('clearing state logour')

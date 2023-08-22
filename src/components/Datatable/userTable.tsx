@@ -56,7 +56,7 @@ export const UserTable = ({ setUserCount }: UserTableProps) => {
         footerGroups,
     } = tableInstance
     const { page, state, nextPage, previousPage,
-        canNextPage, canPreviousPage, pageOptions } = tableInstance as any
+        canNextPage, canPreviousPage, pageOptions, setPageSize } = tableInstance as any
     const { pageIndex } = state
 
     return (
@@ -64,47 +64,49 @@ export const UserTable = ({ setUserCount }: UserTableProps) => {
             {tableData.length > 1 && (
                 <div>
                     <div className='table_area'>
-                        <table {...getTableProps()}>
-                            <thead>
-                                {headerGroups.map(headerGroup => (
-                                    <tr {...headerGroup.getHeaderGroupProps()}>
-                                        {headerGroup.headers.map(column => (
-                                            <th {...column.getHeaderProps()}>
-                                                {column.render('Header')}
-                                            </th>
-                                        ))}
-                                    </tr>
-                                ))}
-
-                            </thead>
-                            <tbody {...getTableBodyProps()}>
-                                {page.map(row => {
-                                    prepareRow(row)
-                                    return (
-                                        <tr {...row.getRowProps()}>
-                                            {row.cells.map(cell => {
-                                                return (
-                                                    <td {...cell.getCellProps()}>
-                                                        {cell.render('Cell')}
-                                                    </td>
-                                                )
-                                            })}
+                        <div className='main_table'>
+                            <table {...getTableProps()}>
+                                <thead>
+                                    {headerGroups.map(headerGroup => (
+                                        <tr {...headerGroup.getHeaderGroupProps()}>
+                                            {headerGroup.headers.map(column => (
+                                                <th {...column.getHeaderProps()}>
+                                                    {column.render('Header')}
+                                                </th>
+                                            ))}
                                         </tr>
-                                    )
-                                })}
-                            </tbody>
-                            <tfoot>
-                                {footerGroups.map(footerGroup => (
-                                    <tr {...footerGroup.getFooterGroupProps()}>
-                                        {footerGroup.headers.map(column => (
-                                            <td {...column.getFooterProps()}>
-                                                {column.render('Footer')}
-                                            </td>
-                                        ))}
-                                    </tr>
-                                ))}
-                            </tfoot>
-                        </table>
+                                    ))}
+
+                                </thead>
+                                <tbody {...getTableBodyProps()}>
+                                    {page.map(row => {
+                                        prepareRow(row)
+                                        return (
+                                            <tr {...row.getRowProps()}>
+                                                {row.cells.map(cell => {
+                                                    return (
+                                                        <td {...cell.getCellProps()}>
+                                                            {cell.render('Cell')}
+                                                        </td>
+                                                    )
+                                                })}
+                                            </tr>
+                                        )
+                                    })}
+                                </tbody>
+                                <tfoot>
+                                    {footerGroups.map(footerGroup => (
+                                        <tr {...footerGroup.getFooterGroupProps()}>
+                                            {footerGroup.headers.map(column => (
+                                                <td {...column.getFooterProps()}>
+                                                    {column.render('Footer')}
+                                                </td>
+                                            ))}
+                                        </tr>
+                                    ))}
+                                </tfoot>
+                            </table>
+                        </div>
                         <div className='page_control'>
                             <span>
                                 Page{' '}
@@ -129,6 +131,7 @@ export const UserTable = ({ setUserCount }: UserTableProps) => {
                     </div>
                 </div>
             )}
+            {() => setPageSize(5)}
             {isLoading && <div>Loading...</div>}
             {!isLoading && usersData.length === 0 && <div>No users found</div>}
 
