@@ -47,66 +47,86 @@ const AdModalForView = (props: ViewAdsDataProps) => {
     );
 }
 const AdModalForEdit = (props: UpdateAdsDataProps) => {
-    const { adData, onClose, setAdDataAfterSavedEdit } = props
-    const [upData, setUpData] = useState({})
-    const [editedAdData, setEditedAdData] = useState<AdInfoFromApi>(adData);
-    const [updateAdData] = useUpdateAdMutation()
+    const { adData, onClose, setAdDataAfterSavedEdit } = props;
+    const [editedAdData, setEditedAdData] = useState<AdInfoFromApi>({ name: adData.name, url: adData.url, _id: adData._id});
+    const [isEditMode, setIsEditMode] = useState(false);
+    const [updateFunc] = useUpdateAdMutation()
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        const updatedAdData = { ...editedAdData, [name]: value };
-        const mainUpdatedAdData = { ...upData, [name]: value };
-        console.log(editedAdData)
-        console.log(updatedAdData)
-        // console.log(mainUpdatedAdData)
-        // setEditedAdData(updatedAdData);
-        setUpData(prevData => ({
+        setEditedAdData(prevData => ({
             ...prevData,
             [name]: value
-        }))
+        }));
     };
 
-    const saveEditedAdData = async () => {
+    const handleEditClick = () => {
+        setIsEditMode(true);
+    };
+
+    const handleSaveClick = async () => {
         try {
-            console.log(upData)
-            const requestParams = { ad_id: editedAdData._id, ...upData } as UpdateAdInfoRequestParams;
-            const response = await updateAdData(requestParams).unwrap(); // Replace with your API call
+            const response = await updateAdData(); // Call your update API here
             setAdDataAfterSavedEdit(prevAdsData => {
                 const updatedIndex = prevAdsData.findIndex(ad => ad._id === adData._id);
-
                 const updatedAds = [...prevAdsData];
-                updatedAds[updatedIndex] = response.data.ad;
-
+                updatedAds[updatedIndex] = response.ad;
                 return updatedAds;
             });
-        } catch (error) { handleError(error) }
+            setIsEditMode(false);
+            onClose();
+        } catch (error) {
+            handleError(error);
+        }
+    };
+
+    const handleCancelClick = () => {
+        setEditedAdData({ ...adData });
+        setIsEditMode(false);
+        onClose();
+    };
+
+    const updateAdData = async () => {
+        // Create the request parameters based on editedAdData
+        const requestParams = { ad_id: editedAdData._id, ...editedAdData } as UpdateAdInfoRequestParams;
+        const response = await updateFunc(requestParams).unwrap(); // Replace with your update mutation
+        return response.data;
     };
 
     return (
-        <div className='ad-modal edit-ad-modal'>
-            <h2>Edit Ad</h2>
+        <div className={`ad-modal edit-ad-modal`}>
+            <h2>{isEditMode ? 'Edit Ad' : 'Ad Details'}</h2>
             <label htmlFor="name">Name</label>
             <input
                 type="text"
                 name="name"
-                value={adData.name}
+                value={editedAdData.name}
                 onChange={handleInputChange}
+                readOnly={!isEditMode}
             />
             <label htmlFor="url">URL</label>
             <input
                 type="text"
                 name="url"
-                value={adData.url}
+                value={editedAdData.url}
                 onChange={handleInputChange}
+                readOnly={!isEditMode}
             />
             {/* Add more input fields for other properties */}
             <div className="button-action-area-for-edit-modal">
-                <button className="save-button" onClick={saveEditedAdData}>Save</button>
-                <button className="close-button" onClick={onClose}>Cancel</button>
+                {isEditMode ? (
+                    <>
+                        <button className="save-button" onClick={handleSaveClick}>Save</button>
+                        <button className="close-button" onClick={handleCancelClick}>Cancel</button>
+                    </>
+                ) : (
+                    <button className="edit-button" onClick={handleEditClick}>Edit</button>
+                )}
             </div>
         </div>
     );
-}
+};
+
 
 interface AdTableProps {
     setAdCount: React.Dispatch<React.SetStateAction<number>>
