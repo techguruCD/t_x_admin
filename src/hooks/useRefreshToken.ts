@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../app/store'
 import { useRefreshTokenQuery } from '../api/authApi'
@@ -7,7 +7,7 @@ import { setAuth } from '../slices/authSlice'
 function useRefreshToken() {
     const dispatch = useDispatch()
     const { isLoggedIn, accessToken } = useSelector((state: RootState) => state.auth)
-    const { data, isSuccess, isError, isLoading } = useRefreshTokenQuery(null)
+    const { data, isSuccess, isError, isLoading } = useRefreshTokenQuery([])
 
     return useEffect(() => {
         console.log({

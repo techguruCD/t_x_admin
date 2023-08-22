@@ -30,7 +30,7 @@ export const adApiSlice = apiSlice.injectEndpoints({
                 }
             }
         }),
-        getAds: builder.query<GetAdsResponse, any>({
+        getAds: builder.query<GetAdsResponse, []>({
             query: () => ({
                 url: USER_URL,
                 method: 'GET'

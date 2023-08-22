@@ -1,5 +1,4 @@
 import { API_BASEURL } from '../constants';
-import { EndpointDefinitions } from '@reduxjs/toolkit/dist/query/react'
 import {
     UserLoginData,
     LoginResponse,
@@ -72,7 +71,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
                 headers: { Authorization: `Bearer ${credentials.access_token}` }
             })
         }),
-        refreshToken: builder.query<LoginResponse, null>({
+        refreshToken: builder.query<LoginResponse, []>({
             query: () => ({
                 url: AUTH_URL + '/authtoken',
                 method: 'GET',

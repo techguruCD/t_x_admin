@@ -1,11 +1,8 @@
-import React, { DetailedHTMLProps, HTMLAttributes, useState } from 'react'
+import React, { MouseEventHandler, HTMLAttributes, useState } from 'react'
 import {
-    faUsers, faBullhorn, faSignOutAlt,
     IconDefinition
 } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon, IconProp } from "@fortawesome/react-fontawesome";
-import { library } from "@fortawesome/fontawesome-svg-core";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import './button.scss'
 
 interface ButtonProps {
@@ -35,8 +32,8 @@ const Button = (props: ButtonProps) => {
 interface CustomButtonProps {
     icon: IconDefinition,
     text: string,
-    style: Record<string, string>,
-    onClick?: (e: DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>) => void
+    style?: Record<string, string>,
+    onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
 }
 
 const CustomButton = ({ icon, text, style, onClick }: CustomButtonProps) => {
@@ -47,11 +44,12 @@ const CustomButton = ({ icon, text, style, onClick }: CustomButtonProps) => {
     }
     return (
         <div
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            onClick={onClick as any}
             className='custombutton__content__item'
             style={style}
             onMouseEnter={() => toggleHoverEffect(true)}
             onMouseLeave={() => toggleHoverEffect(false)}
-            onClick={onClick}
         >
             <FontAwesomeIcon
                 className='icon'

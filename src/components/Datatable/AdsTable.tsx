@@ -10,6 +10,7 @@ import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query'
 import { useUpdateAdMutation } from '../../api/adApi'
 import { UpdateAdInfoRequestParams } from '../../api/types/adApi.types'
 import { SerializedError } from '@reduxjs/toolkit'
+import { handleError } from '../../utils/errorHandler'
 
 function formatDate(dateString: string) {
     const options = { year: 'numeric', month: 'long', day: 'numeric' } as const;
@@ -25,11 +26,14 @@ interface UpdateAdsDataProps {
     onClose: () => void,
     setAdDataAfterSavedEdit: React.Dispatch<React.SetStateAction<AdInfoFromApi[]>>
 }
-
+interface AdDataAllowedToBeUpdated {
+    name: AdInfoFromApi['name'],
+    url: AdInfoFromApi['url'],
+    _id: AdInfoFromApi['_id']
+}
 
 const AdModalForView = (props: ViewAdsDataProps) => {
-    const { adData: adInfo, onClose } = props
-    const [adData, setAdData] = useState<AdInfoFromApi>(adInfo)
+    const { adData, onClose } = props
 
     return (
         <div className='ad-modal'>
@@ -47,9 +51,10 @@ const AdModalForView = (props: ViewAdsDataProps) => {
         </div>
     );
 }
+
 const AdModalForEdit = (props: UpdateAdsDataProps) => {
     const { adData, onClose, setAdDataAfterSavedEdit } = props;
-    const [editedAdData, setEditedAdData] = useState<AdInfoFromApi>({ name: adData.name, url: adData.url, _id: adData._id });
+    const [editedAdData, setEditedAdData] = useState<AdDataAllowedToBeUpdated>({ name: adData.name, url: adData.url, _id: adData._id });
     const [isEditMode, setIsEditMode] = useState(false);
     const [updateFunc] = useUpdateAdMutation()
 
@@ -67,7 +72,7 @@ const AdModalForEdit = (props: UpdateAdsDataProps) => {
 
     const handleSaveClick = async () => {
         try {
-            const response = await updateAdData(); // Call your update API here
+            const response = await updateAdData(); 
             setAdDataAfterSavedEdit(prevAdsData => {
                 const updatedIndex = prevAdsData.findIndex(ad => ad._id === adData._id);
                 const updatedAds = [...prevAdsData];
@@ -129,7 +134,6 @@ const AdModalForEdit = (props: UpdateAdsDataProps) => {
     );
 };
 
-
 interface AdTableProps {
     setAdCount: React.Dispatch<React.SetStateAction<number>>
 }
@@ -186,7 +190,8 @@ export const AdsTable = ({ setAdCount }: AdTableProps) => {
         footerGroups,
     } = tableInstance
     const { page, state, nextPage, previousPage,
-        canNextPage, canPreviousPage, pageOptions, setPageSize, pageSize } = tableInstance as any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        canNextPage, canPreviousPage, pageOptions, setPageSize } = tableInstance as any
     const { pageIndex } = state
 
     const viewAdDetails = (adData: AdInfoFromApi) => {

@@ -62,7 +62,5 @@ interface RefreshResponse {
 export const apiSlice = createApi({
     baseQuery: baseQueryWithReAuth,
     tagTypes: ['User'],
-    endpoints: (builder) => ({
-
-    })
+    endpoints: () => ({})
 })

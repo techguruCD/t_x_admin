@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 import "./styles/GlobalStyles.scss";
 import Signup from "./pages/auth/signup";
